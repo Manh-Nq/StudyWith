@@ -1,0 +1,388 @@
+{
+  "@@locale": "vi",
+  "appTitle": "Ứng dụng học tập",
+  "homeAppBarTitle": "Học tập",
+  "homeTabSubjects": "Môn học",
+  "homeTabComingSoon": "Sắp có",
+  "homeTabSettings": "Cài đặt",
+  "homeTabTracking": "Theo dõi",
+  "homePickSubject": "Chọn môn để bắt đầu",
+  "homeSubjectReadingTitle": "Tập đọc",
+  "homeSubjectReadingSubtitle": "Đọc và luyện tiếng Việt",
+  "homeSubjectMathTitle": "Toán",
+  "homeSubjectMathSubtitle": "Toán tư duy",
+  "homeSubjectLanguageTitle": "Ngoại ngữ",
+  "homeSubjectLanguageSubtitle": "Từ điển offline — ưu tiên tiếng Anh",
+  "languageStudyHubTitle": "Học ngoại ngữ",
+  "languageStudyHubPickPair": "Chọn cặp ngôn ngữ",
+  "languageStudyPairEnVnTitle": "Tiếng Anh → Tiếng Việt",
+  "languageStudyPairEnVnSubtitle": "Tra cứu từ offline",
+  "languageStudyPairZhViTitle": "Tiếng Trung → Tiếng Việt",
+  "languageStudyPairZhViSubtitle": "Sẽ bổ sung sau",
+  "languageStudyPairZhEnTitle": "Tiếng Trung → Tiếng Anh",
+  "languageStudyPairZhEnSubtitle": "Sẽ bổ sung sau",
+  "languageStudyChipSoon": "Sắp có",
+  "languageStudyUnlockTitle": "Mở khoá",
+  "languageStudyLockScreenTitle": "Khoá màn hình này",
+  "languageStudyExitTitle": "Thoát học ngoại ngữ?",
+  "languageStudyExitMessage": "Bạn sẽ quay lại trang chủ.",
+  "languageStudyScreenLockedSnack": "Màn hình đang khoá. Bấm biểu tượng khoá và nhập mật khẩu.",
+  "languageStudyEnViAppBarTitle": "Tiếng Anh · Tiếng Việt",
+  "languageStudyPreparingDb": "Đang chuẩn bị từ điển…",
+  "languageStudyDbReady": "Từ điển đã sẵn sàng.",
+  "languageStudyDbError": "Không mở được từ điển.",
+  "languageStudyTryHello": "Thử: hello",
+  "languageStudySearchHint": "Gõ từ tiếng Anh…",
+  "languageStudyLookupTooltip": "Tra cứu",
+  "languageStudyClearSearchTooltip": "Xoá",
+  "languageStudyTypeForSuggestions": "Gõ thêm để xem gợi ý từ.",
+  "languageStudyNoSuggestions": "Chưa có từ trùng khớp.",
+  "languageStudyNoWordFound": "Không có mục từ điển cho từ này.",
+  "languageStudyMeaningsHeading": "Nghĩa",
+  "languageStudyExampleLabel": "Ví dụ",
+  "languageStudySourceLabel": "Nguồn",
+  "languageStudyLearn20Button": "Học 20 từ ngẫu nhiên",
+  "languageStudyReview20Button": "Kiểm tra 20 từ đã học",
+  "languageStudyLearn20AppBar": "Học · 20 từ",
+  "languageStudyReview20AppBar": "Kiểm tra · 20 từ",
+  "languageStudyReviewEmpty": "Chưa có từ nào đã học. Hãy mở \"Học 20 từ ngẫu nhiên\" trước.",
+  "languageStudyTopicBanner": "Chủ đề: {topic}",
+  "@languageStudyTopicBanner": {
+    "placeholders": {
+      "topic": {
+        "type": "String"
+      }
+    }
+  },
+  "languageStudyTopicNoun": "Danh từ",
+  "languageStudyTopicVerb": "Động từ",
+  "languageStudyTopicAdjective": "Tính từ",
+  "languageStudyTopicAdverb": "Trạng từ",
+  "languageStudyTapToListen": "Chạm thẻ để nghe từ tiếng Anh",
+  "languageStudyTtsSpeedTitle": "Tốc độ đọc",
+  "languageStudyTtsSpeedHint": "Chậm ← → Nhanh",
+  "languageStudyQuizProgress": "Câu {current} / {total}",
+  "@languageStudyQuizProgress": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "languageStudyQuizPickMeaning": "Chọn nghĩa tiếng Việt đúng",
+  "languageStudyQuizNext": "Tiếp theo",
+  "languageStudyQuizFinish": "Hoàn thành",
+  "languageStudyQuizDoneTitle": "Hoàn thành kiểm tra",
+  "languageStudyQuizDoneBody": "Bạn trả lời đúng {correct}/{total} câu.",
+  "@languageStudyQuizDoneBody": {
+    "placeholders": {
+      "correct": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "languageStudyLearnedCount": "Đã gặp {count} từ khi học",
+  "@languageStudyLearnedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "languageStudyAttribution": "Dữ liệu từ điển: minhqnd (CC BY-SA 4.0) · dict.minhqnd.com",
+  "homeSoonEnglishTitle": "Tiếng Anh",
+  "homeSoonEnglishSubtitle": "Từ vựng, nghe — đang chuẩn bị",
+  "homeSoonOtherTitle": "Môn khác",
+  "homeSoonOtherSubtitle": "Sẽ bổ sung theo lộ trình",
+  "homeChipComingSoon": "Sắp có",
+  "homeComingSoonSnack": "Mục \"{title}\" sẽ được thêm sau.",
+  "@homeComingSoonSnack": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsLanguageTitle": "Ngôn ngữ",
+  "settingsLanguageSubtitle": "Chọn ngôn ngữ hiển thị ứng dụng",
+  "settingsLanguageVietnamese": "Tiếng Việt",
+  "settingsLanguageEnglish": "Tiếng Anh",
+  "mathListAppBarTitle": "Danh sách dạng toán tư duy",
+  "mathGroupNumberCounting": "Số và đếm",
+  "mathGroupSimpleOperations": "Phép tính đơn giản",
+  "mathGroupGeometrySpace": "Hình học và không gian",
+  "mathGroupClassificationLogic": "Phân loại và logic",
+  "mathActCountingTitle": "Đếm số vật, chọn đáp án đúng",
+  "mathActCountingDesc": "Đếm số lượng vật rồi chọn một trong hai đáp án.",
+  "mathActCompareTitle": "So sánh nhiều hơn, ít hơn, bằng nhau",
+  "mathActCompareDesc": "Quan sát hai nhóm và chọn quan hệ đúng.",
+  "mathActSequenceTitle": "Điền số còn thiếu trong dãy",
+  "mathActSequenceDesc": "Ví dụ: 1, 2, ?, 4, 5.",
+  "mathActSortTitle": "Sắp xếp số tăng hoặc giảm",
+  "mathActSortDesc": "Sắp xếp dãy số theo thứ tự.",
+  "mathActAddSubTitle": "Cộng, trừ trong phạm vi 10 và 20",
+  "mathActAddSubDesc": "Luyện phép cộng trừ cơ bản.",
+  "mathActPictureTitle": "Bài toán có tranh",
+  "mathActPictureDesc": "Ví dụ: 3 con gà + 2 con gà = ?",
+  "mathPictureSumLimitDialogTitle": "Giới hạn tổng phép cộng",
+  "mathPictureSumLimitDialogBody": "Mỗi câu có hai nhóm; tổng hai nhóm không vượt quá số này.",
+  "mathPictureSumLimitLabel": "Tổng tối đa (ví dụ 10)",
+  "mathPictureSumLimitInvalid": "Nhập một số nguyên.",
+  "mathPictureSumLimitOutOfRange": "Tổng phải từ {min} đến {max}.",
+  "@mathPictureSumLimitOutOfRange": {
+    "placeholders": {
+      "min": { "type": "int" },
+      "max": { "type": "int" }
+    }
+  },
+  "mathPictureAddCountHint": "Đếm tranh từng bên, rồi chọn tổng bên dưới.",
+  "mathPictureAddLayoutHint": "Đếm từng nhóm, rồi chọn đáp án phía dưới.",
+  "mathActFillOpTitle": "Điền dấu +, −, =",
+  "mathActFillOpDesc": "Chọn dấu phép tính đúng vào chỗ trống.",
+  "mathActShapesTitle": "Nhận biết hình học",
+  "mathActShapesDesc": "Tròn, vuông, tam giác, chữ nhật.",
+  "mathActSizeCompareTitle": "Phân biệt to nhỏ, cao thấp, dài ngắn",
+  "mathActSizeCompareDesc": "Quan sát và chọn mô tả đúng.",
+  "mathActPositionTitle": "Nhận biết vị trí",
+  "mathActPositionDesc": "Trên, dưới, trái, phải, trong, ngoài.",
+  "mathActOddOneTitle": "Tìm vật khác loại",
+  "mathActOddOneDesc": "Ví dụ: mèo, chó, ô tô — khác loại?",
+  "mathActPatternTitle": "Hoàn thành quy luật",
+  "mathActPatternDesc": "Ví dụ: đỏ, xanh, đỏ, xanh, …",
+  "mathActMatchingTitle": "Ghép cặp tương ứng",
+  "mathActMatchingDesc": "Con vật — thức ăn, đồ vật — công dụng.",
+  "mathActSameDiffTitle": "Tìm hình giống hoặc khác nhau",
+  "mathActSameDiffDesc": "Quan sát và chọn đáp án phù hợp.",
+  "mathPlaceholderBody": "Dạng toán này sẽ được bổ sung trong bản cập nhật sau.",
+  "mathCountingScreenTitle": "Học toán tư duy",
+  "mathExamStartTitle": "Bắt đầu kiểm tra",
+  "mathExamDurationLabel": "Thời gian làm",
+  "mathExamTimePerQuestionLabel": "Giới hạn mỗi câu",
+  "mathExamMinutes5": "5 phút",
+  "mathExamMinutes10": "10 phút",
+  "mathExamMinutes15": "15 phút",
+  "mathExamMinutes20": "20 phút",
+  "mathExamSeconds30PerQ": "30 giây / câu",
+  "mathExamSeconds45PerQ": "45 giây / câu",
+  "mathExamSeconds60PerQ": "60 giây / câu",
+  "mathExamSeconds90PerQ": "90 giây / câu",
+  "mathExamEstimatedQuestions": "Ước tính số câu: {count}",
+  "@mathExamEstimatedQuestions": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mathCancel": "Huỷ",
+  "mathStart": "Bắt đầu",
+  "mathExamResultTitle": "Kết quả bài kiểm tra",
+  "mathExamScoreColon": "Điểm: {score} / {total}",
+  "@mathExamScoreColon": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "mathExamCorrectCount": "Đúng: {n} câu",
+  "@mathExamCorrectCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "mathExamWrongCount": "Sai: {n} câu",
+  "@mathExamWrongCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "mathExamRetry": "Làm lại kiểm tra",
+  "mathExamBackToPractice": "Về luyện tập",
+  "mathScreenLockedSnack": "Màn hình đang khoá. Bấm nút mở khoá để nhập mật khẩu.",
+  "mathLockMathScreenTitle": "Khoá màn hình toán",
+  "mathPasswordHint": "Mật khẩu",
+  "mathUnlockTitle": "Mở khoá",
+  "mathPasswordEntryTitle": "Nhập mật khẩu",
+  "mathDialogLock": "Khoá",
+  "mathDialogUnlock": "Mở khoá",
+  "mathDialogOk": "OK",
+  "mathWrongPasswordSnack": "Sai mật khẩu, vui lòng thử lại.",
+  "mathExitTitle": "Thoát toán tư duy?",
+  "mathExitMessage": "Bạn có chắc muốn quay lại không?",
+  "mathExitStay": "Ở lại",
+  "mathExitLeave": "Thoát",
+  "mathNoQuestion": "Không có câu hỏi",
+  "mathTooltipOpenExam": "Mở màn kiểm tra",
+  "mathTooltipUnlock": "Mở khoá",
+  "mathTooltipLock": "Khoá",
+  "mathTooltipManageObjects": "Quản lý vật",
+  "mathExamModeBanner": "Chế độ: Kiểm tra",
+  "mathScoreRunning": "Điểm: {score} / {total}",
+  "@mathScoreRunning": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "mathCompareInstruction": "Hãy so sánh và chọn dấu đúng",
+  "mathCountingQuestionHowMany": "Có bao nhiêu {name}?",
+  "@mathCountingQuestionHowMany": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mathSequenceFillMissingHint": "Hãy điền số còn thiếu",
+  "mathSequenceModeDialogTitle": "Chọn cách học dãy số",
+  "mathSequenceModeConsecutiveTitle": "Số liên tục",
+  "mathSequenceModeConsecutiveSubtitle": "1, 2, 3, 4, 5… — dễ cho bé mới học",
+  "mathSequenceModeRandomTitle": "Quy luật ngẫu nhiên",
+  "mathSequenceModeRandomSubtitle": "Bước nhảy 1, 2 hoặc 3 — như trước đây",
+  "mathSequenceModeConsecutiveChip": "Số liên tục",
+  "mathSequenceModeRandomChip": "Quy luật ngẫu nhiên",
+  "mathSortInstructionAscending": "Hãy sắp xếp theo thứ tự tăng dần",
+  "mathSortInstructionDescending": "Hãy sắp xếp theo thứ tự giảm dần",
+  "mathAddSubPickAnswer": "Hãy chọn đáp án đúng",
+  "mathEntityManagerTitle": "Quản lý vật toán",
+  "mathEntityNameLabel": "Tên vật",
+  "mathEntityNameHint": "Ví dụ: Quả táo",
+  "mathEntityImageSourceLabel": "Nguồn ảnh",
+  "mathEntitySourceBase64": "Chọn ảnh từ máy (base64)",
+  "mathEntitySourceUrl": "URL ảnh",
+  "mathEntitySourceVector": "Vector mặc định",
+  "mathEntityUrlLabel": "URL ảnh",
+  "mathEntityUrlHint": "https://…",
+  "mathEntityPickFromDevice": "Chọn ảnh trong máy",
+  "mathEntityVectorShapeLabel": "Hình vector mặc định",
+  "mathEntityShapeCircle": "Hình tròn",
+  "mathEntityShapeSquare": "Hình vuông",
+  "mathEntityShapeRectangle": "Hình chữ nhật",
+  "mathEntityShapeTriangle": "Hình tam giác",
+  "mathEntityShapeStar": "Hình ngôi sao",
+  "mathEntityAddButton": "Thêm vật",
+  "mathEntitySnackNameRequired": "Nhập tên vật",
+  "mathEntitySnackPickImage": "Hãy chọn ảnh từ máy",
+  "mathEntitySnackUrlRequired": "Nhập URL ảnh",
+  "mathEntitySnackAdded": "Đã thêm vật",
+  "mathEntityAddFailed": "Thêm vật thất bại: {error}",
+  "@mathEntityAddFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "mathEntitySubtitleVector": "Vector: {value}",
+  "@mathEntitySubtitleVector": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mathEntitySubtitleBase64": "Ảnh trong máy (base64)",
+  "mathEntityDeleteTooltip": "Xoá",
+  "mathEntityDeleteConfirmTitle": "Xoá vật này?",
+  "mathEntityDeleteConfirmBody": "Thao tác này không hoàn tác.",
+  "mathEntityDeleteConfirmAction": "Xoá",
+  "mathEntityDeleteCancel": "Huỷ",
+  "mathSizeCompareOptionLeftBigger": "Bên trái to hơn",
+  "mathSizeCompareOptionRightBigger": "Bên phải to hơn",
+  "mathSizeCompareOptionEqual": "Bằng nhau",
+  "mathPositionTop": "Trên",
+  "mathPositionBottom": "Dưới",
+  "mathPositionLeft": "Trái",
+  "mathPositionRight": "Phải",
+  "mathSameAnswerSame": "Giống nhau",
+  "mathSameAnswerDifferent": "Khác nhau",
+  "homeSubjectAlphabetTitle": "Chữ cái",
+  "homeSubjectAlphabetSubtitle": "Làm quen âm, vần, đánh vần lớp 1",
+  "alphabetScreenTitle": "Bé học bảng chữ cái & đánh vần",
+  "alphabetScreenSubtitle": "Chạm thẻ để nghe chữ và ví dụ. Bấm Đánh vần để nghe tách âm theo SGK.",
+  "alphabetListenLetter": "Nghe chữ",
+  "alphabetSpell": "Đánh vần",
+  "alphabetTtsError": "Không phát được âm thanh. Hãy kiểm tra âm lượng và thử lại.",
+  "alphabetEditCardsTooltip": "Tùy chỉnh thẻ",
+  "alphabetCatalogTitle": "Thẻ chữ cái",
+  "alphabetCatalogSubtitle": "Chạm một chữ để đổi ví dụ, từ đánh vần hoặc ảnh minh hoạ.",
+  "alphabetEditorTitle": "Sửa: {letter}",
+  "@alphabetEditorTitle": {
+    "placeholders": {
+      "letter": {
+        "type": "String"
+      }
+    }
+  },
+  "alphabetEditorExampleVi": "Ví dụ (tiếng Việt)",
+  "alphabetEditorExampleEn": "Ví dụ (tiếng Anh)",
+  "alphabetEditorSpell": "Âm / vần đánh vần (tiếng Việt)",
+  "alphabetEditorSpellHint": "Dùng cho nút Đánh vần — ví dụ: lá, cá, tre",
+  "alphabetEditorImageSection": "Ảnh minh hoạ",
+  "alphabetEditorImageIcon": "Biểu tượng mặc định",
+  "alphabetEditorImageDevice": "Ảnh trong máy",
+  "alphabetEditorImageUrl": "URL ảnh",
+  "alphabetEditorUrlHint": "https://…",
+  "alphabetEditorPickImage": "Chọn ảnh",
+  "alphabetEditorSave": "Lưu",
+  "alphabetEditorReset": "Khôi phục mặc định",
+  "alphabetEditorResetTitle": "Khôi phục mặc định?",
+  "alphabetEditorResetBody": "Thẻ này sẽ dùng lại ví dụ và biểu tượng gốc của ứng dụng.",
+  "alphabetEditorSaved": "Đã lưu",
+  "alphabetEditorValidationExample": "Nhập ví dụ tiếng Việt",
+  "alphabetEditorValidationSpell": "Nhập âm/vần đánh vần",
+  "alphabetEditorValidationUrl": "Nhập URL ảnh",
+  "alphabetEditorValidationImage": "Hãy chọn ảnh trong máy",
+  "studyTrackingEmpty": "Chưa có phiên học nào. Mở một môn và học — thời gian và kết quả sẽ hiện ở đây.",
+  "studyTrackingTimeLabel": "Thời gian",
+  "studyTrackingStatsLine": "{total} câu · {correct} đúng · {wrong} sai",
+  "@studyTrackingStatsLine": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "correct": {
+        "type": "int"
+      },
+      "wrong": {
+        "type": "int"
+      }
+    }
+  },
+  "studyTrackingDeleteTooltip": "Xoá bản ghi",
+  "studyTrackingDeleteTitle": "Xoá phiên học này?",
+  "studyTrackingDeleteBody": "Bản ghi học tập sẽ bị xoá khỏi lịch sử.",
+  "studyTrackingCancel": "Huỷ",
+  "studyTrackingConfirmDelete": "Xoá",
+  "studySessionDetailTitle": "Chi tiết phiên học",
+  "studySessionDetailEmptyAttempts": "Phiên này chưa lưu chi tiết từng câu.",
+  "studySessionDetailQuestionIndex": "Câu {index}",
+  "@studySessionDetailQuestionIndex": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "studySessionDetailYourAnswer": "Bạn đã chọn",
+  "studySessionDetailCorrectAnswer": "Đáp án đúng",
+  "studySessionDetailCorrectLabel": "Đúng",
+  "studySessionDetailWrongLabel": "Sai",
+  "studySessionDetailActivityType": "Dạng bài",
+  "studySessionDetailOpenTooltip": "Xem chi tiết",
+  "studySessionDetailRelationMore": "Nhiều hơn (>)",
+  "studySessionDetailRelationLess": "Ít hơn (<)",
+  "studySessionDetailRelationEqual": "Bằng (=)",
+  "studySessionDetailSortAscending": "Tăng dần",
+  "studySessionDetailSortDescending": "Giảm dần"
+}

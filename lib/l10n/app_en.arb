@@ -1,0 +1,388 @@
+{
+  "@@locale": "en",
+  "appTitle": "Learning app",
+  "homeAppBarTitle": "Learning",
+  "homeTabSubjects": "Subjects",
+  "homeTabComingSoon": "Coming soon",
+  "homeTabSettings": "Settings",
+  "homeTabTracking": "Tracking",
+  "homePickSubject": "Pick a subject to start",
+  "homeSubjectReadingTitle": "Reading",
+  "homeSubjectReadingSubtitle": "Vietnamese reading & practice",
+  "homeSubjectMathTitle": "Math",
+  "homeSubjectMathSubtitle": "Thinking math",
+  "homeSubjectLanguageTitle": "Languages",
+  "homeSubjectLanguageSubtitle": "Offline dictionary — English first",
+  "languageStudyHubTitle": "Language study",
+  "languageStudyHubPickPair": "Choose a language pair",
+  "languageStudyPairEnVnTitle": "English → Vietnamese",
+  "languageStudyPairEnVnSubtitle": "Look up words offline",
+  "languageStudyPairZhViTitle": "Chinese → Vietnamese",
+  "languageStudyPairZhViSubtitle": "Planned for a later update",
+  "languageStudyPairZhEnTitle": "Chinese → English",
+  "languageStudyPairZhEnSubtitle": "Planned for a later update",
+  "languageStudyChipSoon": "Soon",
+  "languageStudyUnlockTitle": "Unlock",
+  "languageStudyLockScreenTitle": "Lock this screen",
+  "languageStudyExitTitle": "Leave language study?",
+  "languageStudyExitMessage": "You will go back to the home screen.",
+  "languageStudyScreenLockedSnack": "This screen is locked. Tap the lock icon and enter your password.",
+  "languageStudyEnViAppBarTitle": "English · Vietnamese",
+  "languageStudyPreparingDb": "Preparing dictionary…",
+  "languageStudyDbReady": "Dictionary is ready.",
+  "languageStudyDbError": "Could not open the dictionary.",
+  "languageStudyTryHello": "Try: hello",
+  "languageStudySearchHint": "Type an English word…",
+  "languageStudyLookupTooltip": "Look up",
+  "languageStudyClearSearchTooltip": "Clear",
+  "languageStudyTypeForSuggestions": "Keep typing to see word suggestions.",
+  "languageStudyNoSuggestions": "No matching words yet.",
+  "languageStudyNoWordFound": "No dictionary entry for that word.",
+  "languageStudyMeaningsHeading": "Meanings",
+  "languageStudyExampleLabel": "Example",
+  "languageStudySourceLabel": "Source",
+  "languageStudyLearn20Button": "Learn 20 random words",
+  "languageStudyReview20Button": "Review 20 learned words",
+  "languageStudyLearn20AppBar": "Learn · 20 words",
+  "languageStudyReview20AppBar": "Review · 20 words",
+  "languageStudyReviewEmpty": "No words learned yet. Open \"Learn 20 random words\" first.",
+  "languageStudyTopicBanner": "Topic: {topic}",
+  "@languageStudyTopicBanner": {
+    "placeholders": {
+      "topic": {
+        "type": "String"
+      }
+    }
+  },
+  "languageStudyTopicNoun": "Nouns",
+  "languageStudyTopicVerb": "Verbs",
+  "languageStudyTopicAdjective": "Adjectives",
+  "languageStudyTopicAdverb": "Adverbs",
+  "languageStudyTapToListen": "Tap a card to hear the English word",
+  "languageStudyTtsSpeedTitle": "Speech speed",
+  "languageStudyTtsSpeedHint": "Slower ← → Faster",
+  "languageStudyQuizProgress": "Question {current} / {total}",
+  "@languageStudyQuizProgress": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "languageStudyQuizPickMeaning": "Pick the correct Vietnamese meaning",
+  "languageStudyQuizNext": "Next",
+  "languageStudyQuizFinish": "Finish",
+  "languageStudyQuizDoneTitle": "Review complete",
+  "languageStudyQuizDoneBody": "You got {correct} out of {total} correct.",
+  "@languageStudyQuizDoneBody": {
+    "placeholders": {
+      "correct": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "languageStudyLearnedCount": "{count} words seen in study",
+  "@languageStudyLearnedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "languageStudyAttribution": "Dictionary data: minhqnd (CC BY-SA 4.0) · dict.minhqnd.com",
+  "homeSoonEnglishTitle": "English",
+  "homeSoonEnglishSubtitle": "Vocabulary and listening — in preparation",
+  "homeSoonOtherTitle": "More subjects",
+  "homeSoonOtherSubtitle": "Will be added over time",
+  "homeChipComingSoon": "Soon",
+  "homeComingSoonSnack": "\"{title}\" will be added later.",
+  "@homeComingSoonSnack": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsLanguageTitle": "Language",
+  "settingsLanguageSubtitle": "Choose app language",
+  "settingsLanguageVietnamese": "Vietnamese",
+  "settingsLanguageEnglish": "English",
+  "mathListAppBarTitle": "Math thinking activities",
+  "mathGroupNumberCounting": "Numbers & counting",
+  "mathGroupSimpleOperations": "Simple operations",
+  "mathGroupGeometrySpace": "Geometry & space",
+  "mathGroupClassificationLogic": "Sorting & logic",
+  "mathActCountingTitle": "Count objects, pick the answer",
+  "mathActCountingDesc": "Count the objects, then choose one of two answers.",
+  "mathActCompareTitle": "Compare: more / less / equal",
+  "mathActCompareDesc": "Look at two groups and pick the correct relation.",
+  "mathActSequenceTitle": "Fill in the missing number",
+  "mathActSequenceDesc": "Example: 1, 2, ?, 4, 5.",
+  "mathActSortTitle": "Sort numbers up / down",
+  "mathActSortDesc": "Arrange the number list in order.",
+  "mathActAddSubTitle": "Add & subtract within 10 and 20",
+  "mathActAddSubDesc": "Practice basic addition and subtraction.",
+  "mathActPictureTitle": "Picture word problems",
+  "mathActPictureDesc": "Example: 3 chickens + 2 chickens = ?",
+  "mathPictureSumLimitDialogTitle": "Addition limit",
+  "mathPictureSumLimitDialogBody": "Each problem uses two groups; their total will not exceed this number.",
+  "mathPictureSumLimitLabel": "Maximum total (e.g. 10)",
+  "mathPictureSumLimitInvalid": "Enter a whole number.",
+  "mathPictureSumLimitOutOfRange": "Total must be between {min} and {max}.",
+  "@mathPictureSumLimitOutOfRange": {
+    "placeholders": {
+      "min": { "type": "int" },
+      "max": { "type": "int" }
+    }
+  },
+  "mathPictureAddCountHint": "Count the pictures, then pick the total.",
+  "mathPictureAddLayoutHint": "Count each group, then choose the answer below.",
+  "mathActFillOpTitle": "Fill in +, -, =",
+  "mathActFillOpDesc": "Pick the correct operation sign.",
+  "mathActShapesTitle": "Recognize shapes",
+  "mathActShapesDesc": "Circle, square, triangle, rectangle.",
+  "mathActSizeCompareTitle": "Big / small, tall / short, long / short",
+  "mathActSizeCompareDesc": "Look and pick the correct description.",
+  "mathActPositionTitle": "Recognize position",
+  "mathActPositionDesc": "Above / below, left / right, inside / outside.",
+  "mathActOddOneTitle": "Find the odd one out",
+  "mathActOddOneDesc": "Example: cat, dog, car — which is different?",
+  "mathActPatternTitle": "Complete the pattern",
+  "mathActPatternDesc": "Example: red, blue, red, blue, …",
+  "mathActMatchingTitle": "Match pairs",
+  "mathActMatchingDesc": "Animal — food, object — use.",
+  "mathActSameDiffTitle": "Same or different?",
+  "mathActSameDiffDesc": "Look and pick the best answer.",
+  "mathPlaceholderBody": "This activity will be added in a future update.",
+  "mathCountingScreenTitle": "Thinking math",
+  "mathExamStartTitle": "Start test",
+  "mathExamDurationLabel": "Test duration",
+  "mathExamTimePerQuestionLabel": "Time limit per question",
+  "mathExamMinutes5": "5 minutes",
+  "mathExamMinutes10": "10 minutes",
+  "mathExamMinutes15": "15 minutes",
+  "mathExamMinutes20": "20 minutes",
+  "mathExamSeconds30PerQ": "30 seconds / question",
+  "mathExamSeconds45PerQ": "45 seconds / question",
+  "mathExamSeconds60PerQ": "60 seconds / question",
+  "mathExamSeconds90PerQ": "90 seconds / question",
+  "mathExamEstimatedQuestions": "Estimated questions: {count}",
+  "@mathExamEstimatedQuestions": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mathCancel": "Cancel",
+  "mathStart": "Start",
+  "mathExamResultTitle": "Test results",
+  "mathExamScoreColon": "Score: {score} / {total}",
+  "@mathExamScoreColon": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "mathExamCorrectCount": "Correct: {n}",
+  "@mathExamCorrectCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "mathExamWrongCount": "Wrong: {n}",
+  "@mathExamWrongCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "mathExamRetry": "Retake test",
+  "mathExamBackToPractice": "Back to practice",
+  "mathScreenLockedSnack": "Screen is locked. Tap Unlock and enter the password.",
+  "mathLockMathScreenTitle": "Lock math screen",
+  "mathPasswordHint": "Password",
+  "mathUnlockTitle": "Unlock",
+  "mathPasswordEntryTitle": "Enter password",
+  "mathDialogLock": "Lock",
+  "mathDialogUnlock": "Unlock",
+  "mathDialogOk": "OK",
+  "mathWrongPasswordSnack": "Wrong password. Please try again.",
+  "mathExitTitle": "Leave math?",
+  "mathExitMessage": "Are you sure you want to go back?",
+  "mathExitStay": "Stay",
+  "mathExitLeave": "Leave",
+  "mathNoQuestion": "No question available",
+  "mathTooltipOpenExam": "Open test setup",
+  "mathTooltipUnlock": "Unlock",
+  "mathTooltipLock": "Lock",
+  "mathTooltipManageObjects": "Manage objects",
+  "mathExamModeBanner": "Mode: Test",
+  "mathScoreRunning": "Score: {score} / {total}",
+  "@mathScoreRunning": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "mathCompareInstruction": "Compare and pick the correct sign",
+  "mathCountingQuestionHowMany": "How many {name}?",
+  "@mathCountingQuestionHowMany": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mathSequenceFillMissingHint": "Fill in the missing number",
+  "mathSequenceModeDialogTitle": "How should the number line work?",
+  "mathSequenceModeConsecutiveTitle": "Count in order",
+  "mathSequenceModeConsecutiveSubtitle": "1, 2, 3, 4, 5… — best for beginners",
+  "mathSequenceModeRandomTitle": "Mixed steps",
+  "mathSequenceModeRandomSubtitle": "Steps of 1, 2, or 3 — like before",
+  "mathSequenceModeConsecutiveChip": "Count in order",
+  "mathSequenceModeRandomChip": "Mixed steps",
+  "mathSortInstructionAscending": "Sort in ascending order",
+  "mathSortInstructionDescending": "Sort in descending order",
+  "mathAddSubPickAnswer": "Pick the correct answer",
+  "mathEntityManagerTitle": "Math objects",
+  "mathEntityNameLabel": "Object name",
+  "mathEntityNameHint": "Example: Apple",
+  "mathEntityImageSourceLabel": "Image source",
+  "mathEntitySourceBase64": "Pick image on device (base64)",
+  "mathEntitySourceUrl": "Image URL",
+  "mathEntitySourceVector": "Default vector",
+  "mathEntityUrlLabel": "Image URL",
+  "mathEntityUrlHint": "https://…",
+  "mathEntityPickFromDevice": "Pick image on device",
+  "mathEntityVectorShapeLabel": "Default vector shape",
+  "mathEntityShapeCircle": "Circle",
+  "mathEntityShapeSquare": "Square",
+  "mathEntityShapeRectangle": "Rectangle",
+  "mathEntityShapeTriangle": "Triangle",
+  "mathEntityShapeStar": "Star",
+  "mathEntityAddButton": "Add object",
+  "mathEntitySnackNameRequired": "Enter an object name",
+  "mathEntitySnackPickImage": "Pick an image from the device",
+  "mathEntitySnackUrlRequired": "Enter an image URL",
+  "mathEntitySnackAdded": "Object added",
+  "mathEntityAddFailed": "Could not add object: {error}",
+  "@mathEntityAddFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "mathEntitySubtitleVector": "Vector: {value}",
+  "@mathEntitySubtitleVector": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mathEntitySubtitleBase64": "Image on device (base64)",
+  "mathEntityDeleteTooltip": "Delete",
+  "mathEntityDeleteConfirmTitle": "Delete this object?",
+  "mathEntityDeleteConfirmBody": "This cannot be undone.",
+  "mathEntityDeleteConfirmAction": "Delete",
+  "mathEntityDeleteCancel": "Cancel",
+  "mathSizeCompareOptionLeftBigger": "Left is bigger",
+  "mathSizeCompareOptionRightBigger": "Right is bigger",
+  "mathSizeCompareOptionEqual": "Equal",
+  "mathPositionTop": "Top",
+  "mathPositionBottom": "Bottom",
+  "mathPositionLeft": "Left",
+  "mathPositionRight": "Right",
+  "mathSameAnswerSame": "Same",
+  "mathSameAnswerDifferent": "Different",
+  "homeSubjectAlphabetTitle": "Alphabet",
+  "homeSubjectAlphabetSubtitle": "Letters, sounds & spelling (Grade 1)",
+  "alphabetScreenTitle": "Learn the alphabet & spelling",
+  "alphabetScreenSubtitle": "Tap a card to listen. Use Spelling to hear syllable-by-syllable blending.",
+  "alphabetListenLetter": "Listen",
+  "alphabetSpell": "Spell",
+  "alphabetTtsError": "Could not play audio. Check device volume and try again.",
+  "alphabetEditCardsTooltip": "Customize cards",
+  "alphabetCatalogTitle": "Alphabet cards",
+  "alphabetCatalogSubtitle": "Tap a letter to change example text, spelling word, or picture.",
+  "alphabetEditorTitle": "Edit: {letter}",
+  "@alphabetEditorTitle": {
+    "placeholders": {
+      "letter": {
+        "type": "String"
+      }
+    }
+  },
+  "alphabetEditorExampleVi": "Example (Vietnamese)",
+  "alphabetEditorExampleEn": "Example (English)",
+  "alphabetEditorSpell": "Spelling syllable (Vietnamese)",
+  "alphabetEditorSpellHint": "Used for “Spell” — e.g. lá, cá, tre",
+  "alphabetEditorImageSection": "Illustration",
+  "alphabetEditorImageIcon": "Default icon",
+  "alphabetEditorImageDevice": "Photo from device",
+  "alphabetEditorImageUrl": "Image URL",
+  "alphabetEditorUrlHint": "https://…",
+  "alphabetEditorPickImage": "Pick image",
+  "alphabetEditorSave": "Save",
+  "alphabetEditorReset": "Restore defaults",
+  "alphabetEditorResetTitle": "Restore defaults?",
+  "alphabetEditorResetBody": "This card will use the built-in example and icon again.",
+  "alphabetEditorSaved": "Saved",
+  "alphabetEditorValidationExample": "Enter the Vietnamese example",
+  "alphabetEditorValidationSpell": "Enter the spelling syllable",
+  "alphabetEditorValidationUrl": "Enter an image URL",
+  "alphabetEditorValidationImage": "Pick an image from the device",
+  "studyTrackingEmpty": "No study sessions yet. Open a subject and study — times and results will appear here.",
+  "studyTrackingTimeLabel": "Time",
+  "studyTrackingStatsLine": "{total} questions · {correct} correct · {wrong} wrong",
+  "@studyTrackingStatsLine": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "correct": {
+        "type": "int"
+      },
+      "wrong": {
+        "type": "int"
+      }
+    }
+  },
+  "studyTrackingDeleteTooltip": "Delete record",
+  "studyTrackingDeleteTitle": "Delete this session?",
+  "studyTrackingDeleteBody": "This study record will be removed from history.",
+  "studyTrackingCancel": "Cancel",
+  "studyTrackingConfirmDelete": "Delete",
+  "studySessionDetailTitle": "Session details",
+  "studySessionDetailEmptyAttempts": "No saved question details for this session.",
+  "studySessionDetailQuestionIndex": "Question {index}",
+  "@studySessionDetailQuestionIndex": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "studySessionDetailYourAnswer": "Your answer",
+  "studySessionDetailCorrectAnswer": "Correct answer",
+  "studySessionDetailCorrectLabel": "Correct",
+  "studySessionDetailWrongLabel": "Wrong",
+  "studySessionDetailActivityType": "Activity type",
+  "studySessionDetailOpenTooltip": "View details",
+  "studySessionDetailRelationMore": "Greater (more)",
+  "studySessionDetailRelationLess": "Less",
+  "studySessionDetailRelationEqual": "Equal",
+  "studySessionDetailSortAscending": "Ascending",
+  "studySessionDetailSortDescending": "Descending"
+}
