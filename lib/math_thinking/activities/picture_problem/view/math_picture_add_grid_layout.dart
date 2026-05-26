@@ -22,7 +22,8 @@ class MathPictureAddGridLayout {
   static const double _maxCellChild = 56;
   static const double _maxCellDense = 40;
 
-  double get emojiFontSize => (cellSize * 0.82).clamp(8, 52);
+  double emojiFontSizeFor(double maxEmoji) =>
+      (cellSize * 0.82).clamp(8, maxEmoji);
 
   double get contentWidth =>
       columns * cellSize + math.max(0, columns - 1) * gap;
@@ -65,10 +66,14 @@ class MathPictureAddGridLayout {
     return _maxCellDense;
   }
 
-  static int _columnSearchUpper(int count, double innerWidth) {
+  static int _columnSearchUpper(
+    int count,
+    double innerWidth,
+    double minCell,
+  ) {
     final int widthCap = math.max(
       1,
-      ((innerWidth + gapValue) / (minReadableCell + gapValue)).floor(),
+      ((innerWidth + gapValue) / (minCell + gapValue)).floor(),
     );
     return math.min(count, math.max(_preferredMaxColumns(count), widthCap));
   }
@@ -111,7 +116,11 @@ class MathPictureAddGridLayout {
     required int count,
     required double innerWidth,
     required double innerHeight,
+    double? maxCellOverride,
+    double? minCellOverride,
   }) {
+    final double maxCellLimit = maxCellOverride ?? _maxCellForCount(count);
+    final double minCell = minCellOverride ?? minReadableCell;
     final double safeW = math.max(1, innerWidth);
     final double safeH = math.max(1, innerHeight);
     if (count <= 0) {
@@ -123,8 +132,7 @@ class MathPictureAddGridLayout {
         padding: paddingValue,
       );
     }
-    final double maxCell = _maxCellForCount(count);
-    final int colLimit = _columnSearchUpper(count, safeW);
+    final int colLimit = _columnSearchUpper(count, safeW, minCell);
     int bestCols = 1;
     double bestCell = 0;
     for (int cols = 1; cols <= colLimit; cols++) {
@@ -135,7 +143,7 @@ class MathPictureAddGridLayout {
       if (raw <= 0) {
         continue;
       }
-      final double cell = math.min(raw, maxCell);
+      final double cell = math.min(raw, maxCellLimit);
       if (!_fits(
         columns: cols,
         rows: rows,
@@ -171,7 +179,7 @@ class MathPictureAddGridLayout {
     final int rows = (count + cols - 1) ~/ cols;
     final double cellByW = (safeW - (cols - 1) * gapValue) / cols;
     final double cellByH = (safeH - (rows - 1) * gapValue) / rows;
-    final double raw = math.min(math.min(cellByW, cellByH), maxCell);
+    final double raw = math.min(math.min(cellByW, cellByH), maxCellLimit);
     final double cell = _clampCellToFit(
       columns: cols,
       rows: rows,

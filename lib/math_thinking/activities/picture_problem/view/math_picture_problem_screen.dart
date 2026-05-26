@@ -9,8 +9,9 @@ import '../../shared_choice/view/math_choice_activity_screen.dart';
 import '../../shared_choice/view_model/math_choice_activity_view_model.dart';
 import '../model/math_picture_add_meta.dart';
 import '../service/math_picture_add_generator.dart';
-import 'math_picture_add_count_column.dart';
 import 'math_picture_add_grid_layout.dart';
+import 'math_picture_add_layout_metrics.dart';
+import 'math_picture_add_problem_layout.dart';
 
 class MathPictureProblemScreen extends StatelessWidget {
   const MathPictureProblemScreen({
@@ -41,10 +42,6 @@ class MathPictureProblemScreen extends StatelessWidget {
               question.meta[MathPictureAddMeta.rightCount] ?? '',
             ) ??
             0;
-        const double numberLabelHeight = 52;
-        const double sideGutter = 6;
-        const double equalsSlot = 56;
-        const double frameInset = 20;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -60,88 +57,47 @@ class MathPictureProblemScreen extends StatelessWidget {
             Expanded(
               child: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
-                  final double rowHeight = constraints.maxHeight;
-                  final double maxFrameHeight = rowHeight - numberLabelHeight;
-                  final double totalWidth = constraints.maxWidth;
-                  const double plusSlot = 36;
-                  final double pairWidth = (totalWidth -
-                          plusSlot -
-                          equalsSlot -
-                          sideGutter * 4) /
-                      2;
-                  final double innerW = math.max(1, pairWidth - frameInset);
-                  final double innerH = math.max(
-                    1,
-                    maxFrameHeight -
-                        MathPictureAddGridLayout.paddingValue * 2,
+                  final Size screenSize = MediaQuery.sizeOf(context);
+                  final MathPictureAddLayoutMetrics metrics =
+                      MathPictureAddLayoutMetrics.fromConstraints(
+                    bodyConstraints: constraints,
+                    screenSize: screenSize,
                   );
+                  final int maxCount = math.max(left, right);
+                  final double pictureAreaHeight = math.max(
+                    1,
+                    constraints.maxHeight - metrics.equationSectionHeight(),
+                  );
+                  final double pairWidth =
+                      metrics.pairColumnWidth(constraints.maxWidth);
+                  final double innerW = metrics.innerWidth(pairWidth);
+                  final double innerH = metrics.targetInnerHeight(
+                    maxCount: maxCount,
+                    maxFrameHeight: pictureAreaHeight,
+                    paddingValue: MathPictureAddGridLayout.paddingValue,
+                  );
+                  final double maxCell = metrics.maxCellSize(maxCount);
+                  final double minCell = metrics.minCellSize(maxCount);
+                  final double minPictureFrameHeight =
+                      metrics.minFrameHeight(maxCount, pictureAreaHeight);
+                  final double maxEmojiFontSize = maxCell * 0.9;
                   final MathPictureAddGridLayout sharedLayout =
                       MathPictureAddGridLayout.compute(
-                    count: math.max(left, right),
+                    count: maxCount,
                     innerWidth: innerW,
                     innerHeight: innerH,
+                    maxCellOverride: maxCell,
+                    minCellOverride: minCell,
                   );
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        child: MathPictureAddCountColumn(
-                          count: left,
-                          itemEmoji: item,
-                          sharedLayout: sharedLayout,
-                          maxFrameHeight: maxFrameHeight,
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: sideGutter),
-                        child: Center(
-                          child: Text(
-                            '+',
-                            style: TextStyle(
-                              fontSize: 36,
-                              fontWeight: FontWeight.w900,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: MathPictureAddCountColumn(
-                          count: right,
-                          itemEmoji: item,
-                          sharedLayout: sharedLayout,
-                          maxFrameHeight: maxFrameHeight,
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: sideGutter),
-                        child: Center(
-                          child: Text(
-                            '=',
-                            style: TextStyle(
-                              fontSize: 36,
-                              fontWeight: FontWeight.w900,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: equalsSlot,
-                        child: Center(
-                          child: Text(
-                            '?',
-                            style: TextStyle(
-                              fontSize: 44,
-                              fontWeight: FontWeight.w900,
-                              color: Theme.of(context).colorScheme.tertiary,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  return MathPictureAddProblemLayout(
+                    leftCount: left,
+                    rightCount: right,
+                    itemEmoji: item,
+                    metrics: metrics,
+                    sharedLayout: sharedLayout,
+                    maxPictureFrameHeight: pictureAreaHeight,
+                    minPictureFrameHeight: minPictureFrameHeight,
+                    maxEmojiFontSize: maxEmojiFontSize,
                   );
                 },
               ),
