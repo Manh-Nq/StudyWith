@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:location_app/l10n/app_localizations.dart';
 
+import 'package:location_app/theme/kid_friendly_theme.dart';
+
 import 'study_session_detail_screen.dart';
 import 'study_session_repository.dart';
-import 'study_subject_keys.dart';
+import 'study_subject_visual.dart';
 
 class StudyTrackingTab extends StatefulWidget {
   const StudyTrackingTab({super.key});
@@ -34,21 +36,6 @@ class _StudyTrackingTabState extends State<StudyTrackingTab> {
       _rows = next;
       _loading = false;
     });
-  }
-
-  String _subjectLabel(AppLocalizations l, String key) {
-    switch (key) {
-      case StudySubjectKeys.reading:
-        return l.homeSubjectReadingTitle;
-      case StudySubjectKeys.math:
-        return l.homeSubjectMathTitle;
-      case StudySubjectKeys.alphabet:
-        return l.homeSubjectAlphabetTitle;
-      case StudySubjectKeys.languageStudyEnVi:
-        return l.languageStudyPairEnVnTitle;
-      default:
-        return key;
-    }
   }
 
   String _formatClock(DateTime t) {
@@ -154,9 +141,19 @@ class _StudyTrackingTabState extends State<StudyTrackingTab> {
         separatorBuilder: (_, __) => const SizedBox(height: 10),
         itemBuilder: (BuildContext context, int index) {
           final StudySessionRow row = _rows[index];
+          final StudySubjectVisual visual = studySubjectVisual(row.subjectKey);
           return Card(
+            elevation: 0,
+            color: Theme.of(context).colorScheme.surfaceContainerLow,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(KidFriendlyLayout.cardRadius),
+            ),
             child: ListTile(
               isThreeLine: true,
+              leading: CircleAvatar(
+                backgroundColor: visual.barBackgroundFor(context),
+                child: Icon(visual.icon, color: visual.iconColor),
+              ),
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute<void>(
@@ -166,7 +163,7 @@ class _StudyTrackingTabState extends State<StudyTrackingTab> {
                 );
               },
               title: Text(
-                _subjectLabel(l, row.subjectKey),
+                studySubjectLabel(l, row.subjectKey),
                 style: const TextStyle(fontWeight: FontWeight.w800),
               ),
               subtitle: Text(

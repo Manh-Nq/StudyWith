@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:location_app/theme/kid_friendly_adaptive.dart';
+import 'package:location_app/theme/kid_friendly_colors.dart';
+import 'package:location_app/theme/kid_friendly_theme.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:location_app/study_tracking/study_session_recorder.dart';
@@ -65,6 +68,7 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
             content: Text(message, style: const TextStyle(fontSize: 18)),
             duration: const Duration(seconds: 3),
             behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
           ),
         );
     }
@@ -102,12 +106,6 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
       fontWeight: FontWeight.w600,
       color: theme.colorScheme.onSurface,
     );
-  }
-
-  void _clearAll() {
-    _draftController.clear();
-    _viewModel.applyScript('');
-    setState(() {});
   }
 
   Future<void> _pasteFromClipboardAndRevealEditor() async {
@@ -493,19 +491,19 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
         const SnackBar(
           content: Text('Sai mật khẩu, vui lòng thử lại.'),
           behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
         ),
       );
     }
     return matched;
   }
 
-  Future<bool> _onWillPop() async {
+  Future<void> _onBackInvoked() async {
     if (_screenLocked) {
       _showLockedHint();
-      return false;
+      return;
     }
     await _confirmExitAndBack();
-    return false;
   }
 
   Future<void> _replayFocusOrLastSpell() async {
@@ -677,10 +675,11 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
       child: FilledButton.icon(
         style: FilledButton.styleFrom(
           textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          backgroundColor: backgroundColor,
-          foregroundColor: foregroundColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(KidFriendlyLayout.buttonRadius),
+          ),
+          backgroundColor: backgroundColor ?? KidFriendlyColors.skyPrimary,
+          foregroundColor: foregroundColor ?? KidFriendlyColors.onDarkText,
         ),
         onPressed: onPressed,
         icon: Icon(icon, size: 28),
@@ -698,8 +697,8 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
     final ColorScheme cs = theme.colorScheme;
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: cs.surfaceContainerHighest.withValues(alpha: 0.75),
-        borderRadius: BorderRadius.circular(12),
+        color: context.kidTintSurface(KidFriendlyColors.readingTint),
+        borderRadius: BorderRadius.circular(KidFriendlyLayout.buttonRadius),
         border: Border.all(
           color: cs.outlineVariant.withValues(alpha: 0.6),
         ),
@@ -777,13 +776,18 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
     final ThemeData theme = Theme.of(context);
     final ColorScheme cs = theme.colorScheme;
     final Color softBg =
-        Color.lerp(cs.surfaceContainerLowest, const Color(0xFFFFF9E6), 0.35)!;
+        context.kidScreenBackground(KidFriendlyColors.readingTint, amount: 0.48);
     final bool canReplay = vm.canReplayLastSpell ||
         (vm.highlightStart >= 0 && vm.highlightEnd > vm.highlightStart);
     final bool showInputPanel = vm.appliedText.trim().isEmpty;
 
-    return WillPopScope(
-      onWillPop: _onWillPop,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, Object? result) {
+        if (!didPop) {
+          unawaited(_onBackInvoked());
+        }
+      },
       child: Scaffold(
         backgroundColor: softBg,
         appBar: AppBar(
@@ -792,7 +796,8 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
             style: TextStyle(fontWeight: FontWeight.w800, fontSize: 22),
           ),
           elevation: 0,
-          backgroundColor: cs.primaryContainer.withValues(alpha: 0.65),
+          backgroundColor:
+              context.kidBarBackground(KidFriendlyColors.readingTint),
           actions: <Widget>[
             IconButton(
               tooltip: 'Dán',
@@ -854,7 +859,7 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
                             style: const TextStyle(fontSize: 22, height: 1.45),
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
+                              fillColor: cs.surface,
                               hintText: 'Ví dụ: Hôm nay em đọc sách…',
                               hintStyle:
                                   TextStyle(fontSize: 20, color: cs.outline),
@@ -888,8 +893,8 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
                                 : () => vm.applyScript(_draftController.text),
                             icon: Icons.visibility_rounded,
                             label: 'Hiện bài đọc',
-                            backgroundColor: cs.tertiary,
-                            foregroundColor: cs.onTertiary,
+                            backgroundColor: KidFriendlyColors.skyPrimary,
+                            foregroundColor: KidFriendlyColors.onDarkText,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 10, bottom: 2),
@@ -951,7 +956,7 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
                       elevation: 3,
                       shadowColor: cs.shadow.withValues(alpha: 0.35),
                       borderRadius: BorderRadius.circular(_bodyRadius),
-                      color: Colors.white,
+                      color: cs.surface,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(_bodyRadius),
                         child: Listener(
@@ -989,7 +994,7 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
                   Material(
                     elevation: 2,
                     borderRadius: BorderRadius.circular(_bodyRadius),
-                    color: cs.secondaryContainer.withValues(alpha: 0.85),
+                    color: context.kidTintSurface(KidFriendlyColors.readingTint),
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(18, 16, 18, 14),
                       child: Column(
@@ -1002,7 +1007,7 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
                             style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.w800,
                               fontSize: 18,
-                              color: cs.onSecondaryContainer,
+                              color: cs.onSurface,
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -1017,7 +1022,7 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
                               fontSize: _focusWordSize,
                               fontWeight: FontWeight.w900,
                               height: 1.15,
-                              color: cs.onSecondaryContainer,
+                              color: KidFriendlyColors.skyPrimary,
                             ),
                           ),
                           if (vm.largeFocusCaption.isNotEmpty)

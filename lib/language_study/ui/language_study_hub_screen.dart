@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:location_app/l10n/app_localizations.dart';
 
 import 'package:location_app/language_study/model/language_pair_id.dart';
+import 'package:location_app/theme/kid_friendly_adaptive.dart';
+import 'package:location_app/theme/kid_friendly_colors.dart';
+import 'package:location_app/theme/kid_friendly_theme.dart';
 import 'package:location_app/language_study/ui/language_study_en_vi_entry_screen.dart';
 
 /// Chọn cặp ngôn ngữ; cặp chưa làm chỉ hiển thị **Sắp có** (UI thống nhất cho scale sau).
@@ -11,9 +14,11 @@ class LanguageStudyHubScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations l = AppLocalizations.of(context)!;
-    final ColorScheme scheme = Theme.of(context).colorScheme;
     return Scaffold(
+      backgroundColor:
+          context.kidScreenBackground(KidFriendlyColors.languageTint),
       appBar: AppBar(
+        backgroundColor: context.kidBarBackground(KidFriendlyColors.languageTint),
         title: Text(l.languageStudyHubTitle),
       ),
       body: ListView(
@@ -30,8 +35,10 @@ class LanguageStudyHubScreen extends StatelessWidget {
             title: LanguagePairId.enVi.title(l),
             subtitle: LanguagePairId.enVi.subtitle(l),
             icon: Icons.translate_rounded,
-            iconColor: scheme.primary,
-            background: scheme.primaryContainer.withValues(alpha: 0.55),
+            iconColor: KidFriendlyColors.lavenderPrimary,
+            background: context.kidSubjectCardBackground(
+              KidFriendlyColors.languageTint,
+            ),
             enabled: LanguagePairId.enVi.isImplemented,
             onTap: LanguagePairId.enVi.isImplemented
                 ? () {
@@ -49,8 +56,10 @@ class LanguageStudyHubScreen extends StatelessWidget {
             title: LanguagePairId.zhVi.title(l),
             subtitle: LanguagePairId.zhVi.subtitle(l),
             icon: Icons.translate_rounded,
-            iconColor: scheme.secondary,
-            background: scheme.secondaryContainer.withValues(alpha: 0.5),
+            iconColor: KidFriendlyColors.warmCoral,
+            background: context.kidSubjectCardBackground(
+              KidFriendlyColors.alphabetTint,
+            ),
             enabled: LanguagePairId.zhVi.isImplemented,
             onTap: null,
           ),
@@ -59,8 +68,10 @@ class LanguageStudyHubScreen extends StatelessWidget {
             title: LanguagePairId.zhEn.title(l),
             subtitle: LanguagePairId.zhEn.subtitle(l),
             icon: Icons.translate_rounded,
-            iconColor: scheme.tertiary,
-            background: scheme.tertiaryContainer.withValues(alpha: 0.5),
+            iconColor: KidFriendlyColors.skyPrimary,
+            background: context.kidSubjectCardBackground(
+              KidFriendlyColors.readingTint,
+            ),
             enabled: LanguagePairId.zhEn.isImplemented,
             onTap: null,
           ),
@@ -93,7 +104,7 @@ class _PairCard extends StatelessWidget {
     final AppLocalizations l = AppLocalizations.of(context)!;
     return Material(
       color: background,
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(KidFriendlyLayout.cardRadius),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: enabled ? onTap : null,
@@ -102,15 +113,12 @@ class _PairCard extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .surface
-                      .withValues(alpha: 0.92),
+                  color: Theme.of(context).colorScheme.surface,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(icon, size: 32, color: iconColor),
+                child: Icon(icon, size: 40, color: iconColor),
               ),
               const SizedBox(width: 14),
               Expanded(

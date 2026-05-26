@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:location_app/theme/kid_friendly_colors.dart';
+import 'package:location_app/theme/kid_friendly_theme.dart';
 
-/// Overlay tròn xanh/đỏ khi trả lời đúng/sai (toán có chấm điểm).
+/// Overlay tròn khi trả lời đúng/sai — màu mềm, không đỏ/xanh gắt.
 class MathActivityGradedFeedbackOverlay extends StatelessWidget {
   const MathActivityGradedFeedbackOverlay({
     super.key,
     required this.show,
     required this.isCorrect,
   });
+
   final bool show;
   final bool isCorrect;
 
   @override
   Widget build(BuildContext context) {
+    final AppSemanticColors semantic = context.semanticColors;
+    final Color fill =
+        isCorrect ? semantic.success : semantic.tryAgain;
     return IgnorePointer(
       ignoring: true,
       child: AnimatedOpacity(
@@ -32,14 +38,20 @@ class MathActivityGradedFeedbackOverlay extends StatelessWidget {
               height: 132,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: (isCorrect ? Colors.green : Colors.red)
-                    .withValues(alpha: 0.78),
+                color: fill.withValues(alpha: 0.88),
                 shape: BoxShape.circle,
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: fill.withValues(alpha: 0.35),
+                    blurRadius: 20,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
               ),
               child: Icon(
-                isCorrect ? Icons.check_rounded : Icons.close_rounded,
-                size: 84,
-                color: Colors.white,
+                isCorrect ? Icons.check_rounded : Icons.cancel_rounded,
+                size: isCorrect ? 84 : 80,
+                color: KidFriendlyColors.onDarkText,
               ),
             ),
           ),

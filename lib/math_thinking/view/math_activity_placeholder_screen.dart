@@ -20,7 +20,9 @@ class MathActivityPlaceholderScreen extends StatelessWidget {
             child: Text(
               l.mathPlaceholderBody,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
             ),
           ),
         ),

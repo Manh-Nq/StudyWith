@@ -233,7 +233,9 @@ class _MathSequenceScreenState extends State<MathSequenceScreen> {
                                               height: 54,
                                               alignment: Alignment.center,
                                               decoration: BoxDecoration(
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .surface,
                                                 borderRadius:
                                                     BorderRadius.circular(10),
                                               ),

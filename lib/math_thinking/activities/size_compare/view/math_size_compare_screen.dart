@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:location_app/theme/kid_friendly_colors.dart';
 import 'package:location_app/l10n/app_localizations.dart';
 import 'package:location_app/math_thinking/model/math_activity_type.dart';
 
@@ -89,6 +90,7 @@ class MathSizeCompareScreen extends StatelessWidget {
         final List<String> parts = question.questionText.split(',');
         final double left = double.parse(parts[0]);
         final double right = double.parse(parts[1]);
+        final ColorScheme scheme = Theme.of(context).colorScheme;
         return Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -97,9 +99,15 @@ class MathSizeCompareScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  _CompareSquare(size: left, color: Colors.blue.shade400),
+                  _CompareSquare(
+                    size: left,
+                    color: KidFriendlyColors.skyPrimary.withValues(alpha: 0.75),
+                  ),
                   const SizedBox(width: 32),
-                  _CompareSquare(size: right, color: Colors.orange.shade400),
+                  _CompareSquare(
+                    size: right,
+                    color: KidFriendlyColors.warmCoral.withValues(alpha: 0.85),
+                  ),
                 ],
               ),
               const SizedBox(height: 8),
@@ -107,7 +115,7 @@ class MathSizeCompareScreen extends StatelessWidget {
                 height: 4,
                 width: max(left, right) * 2 + 48,
                 decoration: BoxDecoration(
-                  color: Colors.black26,
+                  color: scheme.outlineVariant,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -126,12 +134,14 @@ class _CompareSquare extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
         color: color,
-        border: Border.all(color: Colors.black54, width: 2.5),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: scheme.outline, width: 2),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:location_app/l10n/app_localizations.dart';
@@ -6,6 +7,11 @@ import 'package:location_app/l10n/app_localizations.dart';
 import 'package:location_app/l10n/math_activity_l10n.dart';
 import 'package:location_app/study_tracking/study_session_recorder.dart';
 import 'package:location_app/study_tracking/study_subject_keys.dart';
+import 'package:location_app/theme/kid_friendly_adaptive.dart';
+import 'package:location_app/theme/kid_friendly_colors.dart';
+import 'package:location_app/theme/kid_friendly_menu_layout.dart';
+import 'package:location_app/theme/kid_friendly_theme.dart';
+import 'math_activity_menu_icons.dart';
 import '../activities/add_sub/view/math_add_sub_screen.dart';
 import '../activities/compare/view/math_compare_screen.dart';
 import '../activities/counting/view/math_counting_screen.dart';
@@ -63,17 +69,14 @@ class _MathActivityListScreenState extends State<MathActivityListScreen> {
     }
   }
 
-  Color _groupColor(MathActivityGroup group) {
-    switch (group) {
-      case MathActivityGroup.numberAndCounting:
-        return Colors.lightBlue.shade100;
-      case MathActivityGroup.simpleOperations:
-        return Colors.orange.shade100;
-      case MathActivityGroup.geometryAndSpace:
-        return Colors.green.shade100;
-      case MathActivityGroup.classificationAndLogic:
-        return Colors.purple.shade100;
-    }
+  Color _groupColor(BuildContext context, MathActivityGroup group) {
+    final Color light = switch (group) {
+      MathActivityGroup.numberAndCounting => KidFriendlyColors.mathCountingTint,
+      MathActivityGroup.simpleOperations => KidFriendlyColors.mathOperationsTint,
+      MathActivityGroup.geometryAndSpace => KidFriendlyColors.mathGeometryTint,
+      MathActivityGroup.classificationAndLogic => KidFriendlyColors.mathLogicTint,
+    };
+    return context.kidSubjectCardBackground(light);
   }
 
   Future<void> _openPictureProblem(BuildContext context) async {
@@ -206,11 +209,20 @@ class _MathActivityListScreenState extends State<MathActivityListScreen> {
       MathActivityGroup.geometryAndSpace,
       MathActivityGroup.classificationAndLogic,
     ];
+    final double screenW = MediaQuery.sizeOf(context).width;
+    final double hPad = math.max(
+      KidFriendlyLayout.screenPadding,
+      (screenW - KidFriendlyMenuLayout.maxContentWidth) / 2,
+    );
     return Scaffold(
-      appBar: AppBar(title: Text(l.mathListAppBarTitle)),
+      backgroundColor: context.kidScreenBackground(KidFriendlyColors.mathTint),
+      appBar: AppBar(
+        backgroundColor: context.kidBarBackground(KidFriendlyColors.mathTint),
+        title: Text(l.mathListAppBarTitle),
+      ),
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(14, 12, 14, 16),
+          padding: EdgeInsets.fromLTRB(hPad, 12, hPad, 16),
           children: groups
               .map(
                 (MathActivityGroup group) => Padding(
@@ -235,9 +247,10 @@ class _MathActivityListScreenState extends State<MathActivityListScreen> {
     required MathActivityGroup group,
     required List<MathActivityDefinition> items,
   }) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
     return Material(
-      borderRadius: BorderRadius.circular(14),
-      color: _groupColor(group).withValues(alpha: 0.58),
+      borderRadius: BorderRadius.circular(KidFriendlyLayout.cardRadius),
+      color: _groupColor(context, group),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -245,8 +258,15 @@ class _MathActivityListScreenState extends State<MathActivityListScreen> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Icon(_groupIcon(group), size: 24),
-                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: scheme.surface,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(_groupIcon(group), size: 26),
+                ),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Text(
                     MathActivityL10n.groupTitle(l, group),
@@ -258,71 +278,43 @@ class _MathActivityListScreenState extends State<MathActivityListScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: items.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 1.16),
-              itemBuilder: (BuildContext context, int index) {
-                final MathActivityDefinition item = items[index];
-                return InkWell(
-                  borderRadius: BorderRadius.circular(14),
-                  onTap: () => _openActivity(context, item),
-                  child: Ink(
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.88),
-                      borderRadius: BorderRadius.circular(14),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.08),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4))
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Icon(
-                                item.isImplemented
-                                    ? Icons.play_circle_fill_rounded
-                                    : Icons.schedule_rounded,
-                                color: item.isImplemented
-                                    ? Colors.indigo
-                                    : Colors.grey.shade600),
-                          ),
-                          const Spacer(),
-                          Text(
-                            MathActivityL10n.title(l, item.type),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            MathActivityL10n.description(l, item.type),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey.shade800,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+            const SizedBox(height: 12),
+            LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                final double gridW = constraints.maxWidth;
+                return GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: items.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: KidFriendlyMenuLayout.crossAxisCount(gridW),
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    childAspectRatio:
+                        KidFriendlyMenuLayout.cardAspectRatio(gridW),
                   ),
+                  itemBuilder: (BuildContext context, int index) {
+                    final MathActivityDefinition item = items[index];
+                    return KidFriendlyHeroMenuCard(
+                      title: MathActivityL10n.title(l, item.type),
+                      subtitle: MathActivityL10n.description(l, item.type),
+                      icon: mathActivityMenuIcon(item.type),
+                      iconColor: item.isImplemented
+                          ? scheme.primary
+                          : scheme.onSurfaceVariant,
+                      background: scheme.surface,
+                      onTap: () => _openActivity(context, item),
+                      trailing: Icon(
+                        item.isImplemented
+                            ? Icons.play_circle_fill_rounded
+                            : Icons.schedule_rounded,
+                        size: 30,
+                        color: item.isImplemented
+                            ? scheme.primary
+                            : scheme.onSurfaceVariant,
+                      ),
+                    );
+                  },
                 );
               },
             ),

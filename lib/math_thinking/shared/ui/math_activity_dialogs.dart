@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:location_app/l10n/app_localizations.dart';
 import 'package:location_app/math_thinking/activities/sequence/model/math_sequence_pattern_mode.dart';
+import 'package:location_app/theme/kid_friendly_colors.dart';
+import 'package:location_app/theme/kid_friendly_theme.dart';
 
 /// Giới hạn tổng a+b cho bài toán có tranh.
 const int mathPictureSumLimitMin = 2;
@@ -11,6 +13,14 @@ const int mathPictureSumLimitMax = 9999;
 abstract final class MathActivityDialogs {
   static AppLocalizations _l(BuildContext context) =>
       AppLocalizations.of(context)!;
+
+  static SnackBar _floatingSnack(String message) {
+    return SnackBar(
+      content: Text(message),
+      behavior: SnackBarBehavior.floating,
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+    );
+  }
 
   static Future<void> showExamSetup(
     BuildContext context, {
@@ -83,12 +93,26 @@ abstract final class MathActivityDialogs {
                     },
                   ),
                   const SizedBox(height: 10),
-                  Text(
-                    l.mathExamEstimatedQuestions(estimated),
-                    style: Theme.of(ctx)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(fontWeight: FontWeight.w700),
+                  Material(
+                    color: KidFriendlyColors.mathCountingTint
+                        .withValues(alpha: 0.9),
+                    borderRadius: BorderRadius.circular(
+                      KidFriendlyLayout.buttonRadius,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 10,
+                      ),
+                      child: Text(
+                        l.mathExamEstimatedQuestions(estimated),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w800,
+                              color: KidFriendlyColors.mintGreen,
+                            ),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -209,24 +233,37 @@ abstract final class MathActivityDialogs {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
+        final AppSemanticColors semantic = dialogContext.semanticColors;
+        final TextTheme textTheme = Theme.of(dialogContext).textTheme;
         return AlertDialog(
           title: Text(l.mathExamResultTitle),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Text(
-                l.mathExamScoreColon(score, expectedTotal),
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(fontWeight: FontWeight.w800),
-                textAlign: TextAlign.center,
+              Material(
+                color: semantic.successContainer,
+                borderRadius: BorderRadius.circular(KidFriendlyLayout.cardRadius),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                  child: Text(
+                    l.mathExamScoreColon(score, expectedTotal),
+                    style: textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w900,
+                      color: semantic.onSuccess,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 12),
               Text(
                 '${l.mathExamCorrectCount(score)}\n${l.mathExamWrongCount(wrong)}',
                 textAlign: TextAlign.center,
+                style: textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  height: 1.4,
+                ),
               ),
             ],
           ),
@@ -305,10 +342,7 @@ abstract final class MathActivityDialogs {
     final AppLocalizations l = _l(context);
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(l.mathScreenLockedSnack),
-        behavior: SnackBarBehavior.floating,
-      ),
+      _floatingSnack(l.mathScreenLockedSnack),
     );
   }
 
@@ -316,10 +350,7 @@ abstract final class MathActivityDialogs {
     final AppLocalizations l = _l(context);
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(l.languageStudyScreenLockedSnack),
-        behavior: SnackBarBehavior.floating,
-      ),
+      _floatingSnack(l.languageStudyScreenLockedSnack),
     );
   }
 
@@ -327,10 +358,7 @@ abstract final class MathActivityDialogs {
     final AppLocalizations l = _l(context);
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(l.mathWrongPasswordSnack),
-        behavior: SnackBarBehavior.floating,
-      ),
+      _floatingSnack(l.mathWrongPasswordSnack),
     );
   }
 
@@ -499,7 +527,30 @@ class _PictureSumLimitDialogState extends State<_PictureSumLimitDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Text(l.mathPictureSumLimitDialogBody),
+            Row(
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: KidFriendlyColors.mathOperationsTint,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.image_rounded,
+                    color: KidFriendlyColors.warmCoral,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    l.mathPictureSumLimitDialogBody,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          height: 1.35,
+                        ),
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 12),
             TextField(
               controller: _controller,

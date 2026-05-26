@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:location_app/l10n/app_localizations.dart';
+import 'package:location_app/theme/kid_friendly_adaptive.dart';
+import 'package:location_app/theme/kid_friendly_colors.dart';
+import 'package:location_app/theme/kid_friendly_theme.dart';
 
 import '../data/repository/math_entity_repository.dart';
 import '../model/math_entity_type.dart';
@@ -184,13 +187,26 @@ class _MathEntityManagerScreenState extends State<MathEntityManagerScreen> {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations l = AppLocalizations.of(context)!;
+    final ColorScheme scheme = Theme.of(context).colorScheme;
     return Scaffold(
-      appBar: AppBar(title: Text(l.mathEntityManagerTitle)),
+      backgroundColor: context.kidScreenBackground(KidFriendlyColors.mathTint),
+      appBar: AppBar(
+        backgroundColor: context.kidBarBackground(KidFriendlyColors.mathTint),
+        title: Text(l.mathEntityManagerTitle),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             children: <Widget>[
+              Material(
+                color: scheme.surface,
+                borderRadius: BorderRadius.circular(KidFriendlyLayout.cardRadius),
+                child: Padding(
+                  padding: const EdgeInsets.all(14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
               TextField(
                 controller: _nameController,
                 decoration: InputDecoration(
@@ -246,8 +262,10 @@ class _MathEntityManagerScreenState extends State<MathEntityManagerScreen> {
                     ),
                     const SizedBox(width: 10),
                     if (_pickedBase64.isNotEmpty)
-                      const Icon(Icons.check_circle_rounded,
-                          color: Colors.green),
+                      Icon(
+                        Icons.check_circle_rounded,
+                        color: Theme.of(context).colorScheme.tertiary,
+                      ),
                   ],
                 ),
               if (_selectedImageKind == MathEntityImageKind.vector)
@@ -283,7 +301,16 @@ class _MathEntityManagerScreenState extends State<MathEntityManagerScreen> {
                 width: double.infinity,
                 child: FilledButton(
                   onPressed: _addEntity,
+                  style: FilledButton.styleFrom(
+                    minimumSize:
+                        const Size.fromHeight(KidFriendlyLayout.minTapTarget),
+                    backgroundColor: KidFriendlyColors.mintGreen,
+                  ),
                   child: Text(l.mathEntityAddButton),
+                ),
+              ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -295,7 +322,18 @@ class _MathEntityManagerScreenState extends State<MathEntityManagerScreen> {
                         itemBuilder: (BuildContext context, int index) {
                           final MathEntityType item = _entities[index];
                           return Card(
+                            elevation: 0,
+                            color: scheme.surface,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                KidFriendlyLayout.cardRadius,
+                              ),
+                            ),
                             child: ListTile(
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 4,
+                              ),
                               leading: MathEntityImageWidget(
                                 entity: item,
                                 size: 44,

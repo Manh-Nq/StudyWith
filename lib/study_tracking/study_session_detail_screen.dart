@@ -8,7 +8,10 @@ import 'package:location_app/math_thinking/shared/view/math_entity_image_widget.
 
 import 'language_study_trace_snapshot.dart';
 import 'math_trace_snapshot.dart';
+import 'package:location_app/theme/kid_friendly_colors.dart';
+import 'package:location_app/theme/kid_friendly_theme.dart';
 import 'study_session_repository.dart';
+import 'study_subject_visual.dart';
 
 /// Xem lại chi tiết từng câu đã làm trong một phiên (chỉ đọc).
 class StudySessionDetailScreen extends StatefulWidget {
@@ -48,8 +51,12 @@ class _StudySessionDetailScreenState extends State<StudySessionDetailScreen> {
   Widget build(BuildContext context) {
     final AppLocalizations l = AppLocalizations.of(context)!;
     final ThemeData theme = Theme.of(context);
+    final StudySubjectVisual visual =
+        studySubjectVisual(widget.session.subjectKey);
     return Scaffold(
+      backgroundColor: visual.screenBackgroundFor(context),
       appBar: AppBar(
+        backgroundColor: visual.barBackgroundFor(context),
         title: Text(l.studySessionDetailTitle),
       ),
       body: _loading
@@ -65,19 +72,87 @@ class _StudySessionDetailScreenState extends State<StudySessionDetailScreen> {
                     ),
                   ),
                 )
-              : ListView.separated(
+              : ListView(
                   padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-                  itemCount: _attempts.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 10),
-                  itemBuilder: (BuildContext context, int i) {
-                    final StudySessionGradedAttemptRow row = _attempts[i];
-                    return _GradedAttemptListTile(
-                      listIndexFallback: i + 1,
-                      snapshotJson: row.snapshotJson,
-                      l: l,
-                    );
-                  },
+                  children: <Widget>[
+                    _SessionSummaryCard(session: widget.session, l: l),
+                    const SizedBox(height: 14),
+                    ...List<Widget>.generate(_attempts.length, (int i) {
+                      final StudySessionGradedAttemptRow row = _attempts[i];
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          bottom: i < _attempts.length - 1 ? 10 : 0,
+                        ),
+                        child: _GradedAttemptListTile(
+                          listIndexFallback: i + 1,
+                          snapshotJson: row.snapshotJson,
+                          l: l,
+                        ),
+                      );
+                    }),
+                  ],
                 ),
+    );
+  }
+}
+
+class _SessionSummaryCard extends StatelessWidget {
+  const _SessionSummaryCard({
+    required this.session,
+    required this.l,
+  });
+
+  final StudySessionRow session;
+  final AppLocalizations l;
+
+  @override
+  Widget build(BuildContext context) {
+    final StudySubjectVisual visual = studySubjectVisual(session.subjectKey);
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    return Material(
+      color: KidFriendlyColors.tintSurface(
+        visual.tint,
+        brightness: Theme.of(context).brightness,
+      ),
+      borderRadius: BorderRadius.circular(KidFriendlyLayout.cardRadius),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: <Widget>[
+            CircleAvatar(
+              radius: 26,
+              backgroundColor: scheme.surface,
+              child: Icon(visual.icon, color: visual.iconColor, size: 28),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    studySubjectLabel(l, session.subjectKey),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w900,
+                        ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    l.studyTrackingStatsLine(
+                      session.totalQuestions,
+                      session.correctCount,
+                      session.wrongCount,
+                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: scheme.onSurfaceVariant,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -99,6 +174,7 @@ class StudySessionGradedAttemptDetailScreen extends StatelessWidget {
     final AppLocalizations l = AppLocalizations.of(context)!;
     final int displayN = listIndexFallback;
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
       appBar: AppBar(
         title: Text(l.studySessionDetailQuestionIndex(displayN)),
       ),
@@ -133,15 +209,22 @@ class _GradedAttemptListTile extends StatelessWidget {
     final int displayOrdinal = listIndexFallback;
     final bool ok = _parseIsCorrect(root);
     final ThemeData theme = Theme.of(context);
+    final AppSemanticColors semantic = context.semanticColors;
     final String activityTitle = _activityTitle(l, root);
     final String resultLine =
         ok ? l.studySessionDetailCorrectLabel : l.studySessionDetailWrongLabel;
     return Card(
+      elevation: 0,
+      color: theme.colorScheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(KidFriendlyLayout.cardRadius),
+      ),
       child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
         isThreeLine: true,
         leading: Icon(
           ok ? Icons.check_circle_rounded : Icons.cancel_rounded,
-          color: ok ? Colors.green : Colors.red,
+          color: ok ? semantic.success : semantic.tryAgain,
           size: 32,
         ),
         title: Text(
@@ -188,41 +271,65 @@ class _GradedAttemptFullReview extends StatelessWidget {
     final Map<String, Object?> p = _payloadMap(root);
     final String kind = (p['kind'] as String?) ?? '';
     final ThemeData theme = Theme.of(context);
+    final AppSemanticColors semantic = context.semanticColors;
     final String activityTitle = _activityTitle(l, root);
     return Card(
+      elevation: 0,
+      color: theme.colorScheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(KidFriendlyLayout.cardRadius),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    l.studySessionDetailQuestionIndex(displayQuestionOrdinal),
-                    style: theme.textTheme.titleMedium
-                        ?.copyWith(fontWeight: FontWeight.w900),
-                  ),
+            Material(
+              color: ok ? semantic.successContainer : semantic.tryAgainContainer,
+              borderRadius: BorderRadius.circular(KidFriendlyLayout.buttonRadius),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      ok ? Icons.check_circle_rounded : Icons.cancel_rounded,
+                      color: ok ? semantic.success : semantic.tryAgain,
+                      size: 28,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            l.studySessionDetailQuestionIndex(
+                              displayQuestionOrdinal,
+                            ),
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          Text(
+                            ok
+                                ? l.studySessionDetailCorrectLabel
+                                : l.studySessionDetailWrongLabel,
+                            style: theme.textTheme.labelLarge?.copyWith(
+                              color: ok ? semantic.onSuccess : semantic.onTryAgain,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                Icon(
-                  ok ? Icons.check_circle_rounded : Icons.cancel_rounded,
-                  color: ok ? Colors.green : Colors.red,
-                  size: 28,
-                ),
-              ],
+              ),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 12),
             Text(
               '${l.studySessionDetailActivityType}: $activityTitle',
-              style: theme.textTheme.bodyMedium
-                  ?.copyWith(fontWeight: FontWeight.w700),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              ok ? l.studySessionDetailCorrectLabel : l.studySessionDetailWrongLabel,
-              style: theme.textTheme.labelLarge?.copyWith(
-                color: ok ? Colors.green.shade800 : Colors.red.shade800,
-                fontWeight: FontWeight.w800,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w700,
               ),
             ),
             const Divider(height: 20),
@@ -363,7 +470,7 @@ class _CompareReadOnly extends StatelessWidget {
       children: <Widget>[
         Row(
           children: <Widget>[
-            Expanded(child: _entityGroup(left, lc)),
+            Expanded(child: _entityGroup(context, left, lc)),
             SizedBox(
               width: 48,
               child: Text(
@@ -374,7 +481,7 @@ class _CompareReadOnly extends StatelessWidget {
                     ),
               ),
             ),
-            Expanded(child: _entityGroup(right, rc)),
+            Expanded(child: _entityGroup(context, right, rc)),
           ],
         ),
         const SizedBox(height: 12),
@@ -400,12 +507,12 @@ class _CompareReadOnly extends StatelessWidget {
     );
   }
 
-  Widget _entityGroup(MathEntityType e, int count) {
+  Widget _entityGroup(BuildContext context, MathEntityType e, int count) {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Colors.grey.shade200,
+        color: Theme.of(context).colorScheme.surfaceContainerHigh,
       ),
       child: Wrap(
         spacing: 6,
@@ -440,6 +547,7 @@ class _SequenceReadOnly extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
     final List<Object?> raw = (p['sequence'] as List?) ?? const <Object?>[];
     final List<int?> seq = raw.map((Object? e) {
       if (e == null) {
@@ -464,9 +572,9 @@ class _SequenceReadOnly extends StatelessWidget {
                   height: 48,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: scheme.surface,
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.grey.shade400),
+                    border: Border.all(color: scheme.outlineVariant),
                   ),
                   child: Text(
                     v?.toString() ?? '?',
@@ -547,7 +655,7 @@ class _SortReadOnly extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: Colors.grey.shade200,
+            color: Theme.of(context).colorScheme.surfaceContainerHigh,
           ),
           child: Text(
             unsorted.join(', '),
@@ -712,17 +820,19 @@ Widget _fakeOptionChip(
   required bool isUser,
   required bool isCorrect,
 }) {
-  Color border = Colors.grey.shade400;
-  Color bg = Colors.grey.shade100;
+  final ColorScheme scheme = Theme.of(context).colorScheme;
+  final AppSemanticColors semantic = context.semanticColors;
+  Color border = scheme.outlineVariant;
+  Color bg = scheme.surfaceContainerLowest;
   if (isCorrect) {
-    border = Colors.green;
-    bg = Colors.green.shade50;
+    border = semantic.success;
+    bg = semantic.successContainer;
   } else if (isUser && !isCorrect) {
-    border = Colors.red;
-    bg = Colors.red.shade50;
+    border = semantic.tryAgain;
+    bg = semantic.tryAgainContainer;
   } else if (highlight) {
-    border = Colors.blue;
-    bg = Colors.blue.shade50;
+    border = scheme.primary;
+    bg = scheme.primaryContainer;
   }
   return Container(
     width: double.infinity,

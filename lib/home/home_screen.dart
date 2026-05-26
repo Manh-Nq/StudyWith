@@ -1,11 +1,18 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:location_app/l10n/app_localizations.dart';
 
 import 'package:location_app/language_study/ui/language_study_hub_screen.dart';
 import 'package:location_app/locale/app_locale_scope.dart';
+import 'package:location_app/theme/app_theme_mode_scope.dart';
+import 'package:location_app/theme/kid_friendly_adaptive.dart';
 import 'package:location_app/math_thinking/view/math_activity_list_screen.dart';
 import 'package:location_app/reading_practice/view/reading_practice_screen.dart';
 import 'package:location_app/study_tracking/study_tracking_tab.dart';
+import 'package:location_app/theme/kid_friendly_colors.dart';
+import 'package:location_app/theme/kid_friendly_menu_layout.dart';
+import 'package:location_app/theme/kid_friendly_theme.dart';
 import 'package:location_app/vietnamese_alphabet/view/vietnamese_alphabet_screen.dart';
 
 /// Trang chủ: chọn môn dạng lưới; tab Cài đặt để đổi ngôn ngữ.
@@ -107,60 +114,122 @@ class _SubjectsGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations l = AppLocalizations.of(context)!;
     final ColorScheme scheme = Theme.of(context).colorScheme;
+    final double screenW = MediaQuery.sizeOf(context).width;
+    final double hPad = math.max(
+      KidFriendlyLayout.screenPadding,
+      (screenW - KidFriendlyMenuLayout.maxContentWidth) / 2,
+    );
     return CustomScrollView(
       slivers: <Widget>[
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
-            child: Text(
-              l.homePickSubject,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+            padding: EdgeInsets.fromLTRB(hPad, 20, hPad, 8),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: <Color>[
+                    scheme.primaryContainer.withValues(alpha: 0.85),
+                    scheme.secondaryContainer.withValues(alpha: 0.55),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius:
+                    BorderRadius.circular(KidFriendlyLayout.cardRadius),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(18),
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: scheme.surface.withValues(alpha: 0.92),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.waving_hand_rounded,
+                        size: 32,
+                        color: scheme.secondary,
+                      ),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            l.homePickSubject,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                  color: scheme.onPrimaryContainer,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
         SliverPadding(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+          padding: EdgeInsets.fromLTRB(hPad, 8, hPad, 24),
           sliver: SliverGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: KidFriendlyMenuLayout.crossAxisCount(
+                math.min(screenW - hPad * 2, KidFriendlyMenuLayout.maxContentWidth),
+              ),
               mainAxisSpacing: 14,
               crossAxisSpacing: 14,
-              childAspectRatio: 0.92,
+              childAspectRatio: KidFriendlyMenuLayout.cardAspectRatio(
+                math.min(screenW - hPad * 2, KidFriendlyMenuLayout.maxContentWidth),
+              ),
             ),
             delegate: SliverChildListDelegate(
               <Widget>[
-                _SubjectCard(
+                KidFriendlyHeroMenuCard(
                   title: l.homeSubjectReadingTitle,
                   subtitle: l.homeSubjectReadingSubtitle,
                   icon: Icons.menu_book_rounded,
-                  iconColor: scheme.primary,
-                  background: scheme.primaryContainer.withValues(alpha: 0.65),
+                  iconColor: KidFriendlyColors.skyPrimary,
+                  background: context.kidSubjectCardBackground(
+                    KidFriendlyColors.readingTint,
+                  ),
                   onTap: onReading,
                 ),
-                _SubjectCard(
+                KidFriendlyHeroMenuCard(
                   title: l.homeSubjectAlphabetTitle,
                   subtitle: l.homeSubjectAlphabetSubtitle,
                   icon: Icons.abc_rounded,
-                  iconColor: scheme.secondary,
-                  background: scheme.secondaryContainer.withValues(alpha: 0.75),
+                  iconColor: KidFriendlyColors.warmCoral,
+                  background: context.kidSubjectCardBackground(
+                    KidFriendlyColors.alphabetTint,
+                  ),
                   onTap: onAlphabet,
                 ),
-                _SubjectCard(
+                KidFriendlyHeroMenuCard(
                   title: l.homeSubjectMathTitle,
                   subtitle: l.homeSubjectMathSubtitle,
                   icon: Icons.calculate_rounded,
-                  iconColor: scheme.tertiary,
-                  background: scheme.tertiaryContainer.withValues(alpha: 0.65),
+                  iconColor: KidFriendlyColors.mintGreen,
+                  background: context.kidSubjectCardBackground(
+                    KidFriendlyColors.mathTint,
+                  ),
                   onTap: onMath,
                 ),
-                _SubjectCard(
+                KidFriendlyHeroMenuCard(
                   title: l.homeSubjectLanguageTitle,
                   subtitle: l.homeSubjectLanguageSubtitle,
                   icon: Icons.translate_rounded,
-                  iconColor: scheme.primary,
-                  background: scheme.primaryContainer.withValues(alpha: 0.45),
+                  iconColor: KidFriendlyColors.lavenderPrimary,
+                  background: context.kidSubjectCardBackground(
+                    KidFriendlyColors.languageTint,
+                  ),
                   onTap: onLanguageStudy,
                 ),
               ],
@@ -168,71 +237,6 @@ class _SubjectsGrid extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _SubjectCard extends StatelessWidget {
-  const _SubjectCard({
-    required this.title,
-    required this.subtitle,
-    required this.icon,
-    required this.iconColor,
-    required this.background,
-    required this.onTap,
-  });
-  final String title;
-  final String subtitle;
-  final IconData icon;
-  final Color iconColor;
-  final Color background;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: background,
-      borderRadius: BorderRadius.circular(20),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .surface
-                      .withValues(alpha: 0.9),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(icon, size: 36, color: iconColor),
-              ),
-              const Spacer(),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                subtitle,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
@@ -271,32 +275,40 @@ class _ComingSoonList extends StatelessWidget {
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
       itemCount: rows.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 8),
+      separatorBuilder: (_, __) => const SizedBox(height: 10),
       itemBuilder: (BuildContext ctx, int index) {
         final _SoonRow item = rows[index];
+        final ColorScheme scheme = Theme.of(context).colorScheme;
         return Card(
           elevation: 0,
-          color: Theme.of(context)
-              .colorScheme
-              .surfaceContainerHighest
-              .withValues(alpha: 0.55),
+          color: Color.lerp(
+            scheme.surface,
+            KidFriendlyColors.sunnyYellow.withValues(alpha: 0.25),
+            0.5,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(KidFriendlyLayout.cardRadius),
+          ),
           child: ListTile(
             contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             leading: CircleAvatar(
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              child:
-                  Icon(item.icon, color: Theme.of(context).colorScheme.primary),
+              backgroundColor: KidFriendlyColors.sunnyYellow.withValues(alpha: 0.35),
+              child: Icon(item.icon, color: KidFriendlyColors.warmCoral),
             ),
             title: Text(
               item.title,
-              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
             ),
             subtitle: Padding(
               padding: const EdgeInsets.only(top: 4),
               child: Text(
                 item.subtitle,
-                style: const TextStyle(fontSize: 14),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                    ),
               ),
             ),
             trailing: Chip(
@@ -304,7 +316,7 @@ class _ComingSoonList extends StatelessWidget {
               visualDensity: VisualDensity.compact,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               side: BorderSide.none,
-              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+              backgroundColor: scheme.surface.withValues(alpha: 0.92),
             ),
             onTap: () => snack(l.homeComingSoonSnack(item.title)),
           ),
@@ -320,25 +332,53 @@ class _SettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations l = AppLocalizations.of(context)!;
-    final AppLocaleScope scope = AppLocaleScope.of(context);
-    final String code = scope.locale.languageCode;
+    final AppLocaleScope localeScope = AppLocaleScope.of(context);
+    final AppThemeModeScope themeScope = AppThemeModeScope.of(context);
+    final String localeCode = localeScope.locale.languageCode;
+    final String themeCode =
+        themeScope.themeMode == ThemeMode.dark ? 'dark' : 'light';
+    final ColorScheme scheme = Theme.of(context).colorScheme;
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 24),
       children: <Widget>[
-        Text(
-          l.settingsLanguageTitle,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w800,
-              ),
+        _SettingsSectionHeader(
+          icon: Icons.dark_mode_rounded,
+          iconColor: scheme.primary,
+          title: l.settingsAppearanceTitle,
+          subtitle: l.settingsAppearanceSubtitle,
+          bannerTint: context.kidTintSurface(KidFriendlyColors.languageTint),
         ),
-        const SizedBox(height: 6),
-        Text(
-          l.settingsLanguageSubtitle,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+        const SizedBox(height: 12),
+        SegmentedButton<String>(
+          segments: <ButtonSegment<String>>[
+            ButtonSegment<String>(
+              value: 'light',
+              label: Text(l.settingsThemeLight),
+              icon: const Icon(Icons.light_mode_rounded),
+            ),
+            ButtonSegment<String>(
+              value: 'dark',
+              label: Text(l.settingsThemeDark),
+              icon: const Icon(Icons.dark_mode_rounded),
+            ),
+          ],
+          selected: <String>{themeCode},
+          onSelectionChanged: (Set<String> selection) {
+            final String next = selection.first;
+            themeScope.setThemeMode(
+              next == 'dark' ? ThemeMode.dark : ThemeMode.light,
+            );
+          },
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 28),
+        _SettingsSectionHeader(
+          icon: Icons.language_rounded,
+          iconColor: KidFriendlyColors.lavenderPrimary,
+          title: l.settingsLanguageTitle,
+          subtitle: l.settingsLanguageSubtitle,
+          bannerTint: context.kidTintSurface(KidFriendlyColors.languageTint),
+        ),
+        const SizedBox(height: 12),
         SegmentedButton<String>(
           segments: <ButtonSegment<String>>[
             ButtonSegment<String>(
@@ -352,13 +392,74 @@ class _SettingsTab extends StatelessWidget {
               icon: const Icon(Icons.flag_outlined),
             ),
           ],
-          selected: <String>{code},
+          selected: <String>{localeCode},
           onSelectionChanged: (Set<String> selection) {
             final String next = selection.first;
-            scope.setLocale(Locale(next));
+            localeScope.setLocale(Locale(next));
           },
         ),
       ],
+    );
+  }
+}
+
+class _SettingsSectionHeader extends StatelessWidget {
+  const _SettingsSectionHeader({
+    required this.icon,
+    required this.iconColor,
+    required this.title,
+    required this.subtitle,
+    required this.bannerTint,
+  });
+
+  final IconData icon;
+  final Color iconColor;
+  final String title;
+  final String subtitle;
+  final Color bannerTint;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    return Material(
+      color: bannerTint,
+      borderRadius: BorderRadius.circular(KidFriendlyLayout.cardRadius),
+      child: Padding(
+        padding: const EdgeInsets.all(18),
+        child: Row(
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: scheme.surface,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, size: 28, color: iconColor),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w800,
+                        ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: scheme.onSurfaceVariant,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

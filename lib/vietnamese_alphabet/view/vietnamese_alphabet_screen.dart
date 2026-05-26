@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:location_app/l10n/app_localizations.dart';
+import 'package:location_app/theme/kid_friendly_adaptive.dart';
+import 'package:location_app/theme/kid_friendly_colors.dart';
+import 'package:location_app/theme/kid_friendly_theme.dart';
 import 'package:location_app/reading_practice/service/reading_tts_service.dart';
 import 'package:location_app/reading_practice/service/vietnamese_educational_spelling.dart';
 import 'package:location_app/study_tracking/study_session_recorder.dart';
@@ -231,18 +234,19 @@ class _VietnameseAlphabetScreenState extends State<VietnameseAlphabetScreen> {
   Widget build(BuildContext context) {
     final AppLocalizations l = AppLocalizations.of(context)!;
     final ThemeData theme = Theme.of(context);
-    const Color headerPink = Color(0xFFFFB6D9);
+    final ColorScheme scheme = theme.colorScheme;
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF5F8),
+      backgroundColor:
+          context.kidScreenBackground(KidFriendlyColors.alphabetTint),
       appBar: AppBar(
-        backgroundColor: headerPink,
-        foregroundColor: Colors.black87,
+        backgroundColor: context.kidBarBackground(KidFriendlyColors.alphabetTint),
+        foregroundColor: scheme.onSurface,
         elevation: 0,
         title: Text(
           l.alphabetScreenTitle,
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w900,
-            color: Colors.black87,
+            color: scheme.onSurface,
           ),
         ),
         actions: <Widget>[
@@ -275,7 +279,7 @@ class _VietnameseAlphabetScreenState extends State<VietnameseAlphabetScreen> {
                         l.alphabetScreenSubtitle,
                         textAlign: TextAlign.center,
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: Colors.black54,
+                          color: scheme.onSurfaceVariant,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -350,11 +354,11 @@ class _AlphabetCard extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final bool cardAudioBusy = listenBusy || spellBusy;
     return Material(
-      elevation: 2,
-      borderRadius: BorderRadius.circular(18),
-      color: Colors.white,
+      elevation: 0,
+      borderRadius: BorderRadius.circular(KidFriendlyLayout.cardRadius),
+      color: theme.colorScheme.surface,
       child: InkWell(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(KidFriendlyLayout.cardRadius),
         onTap: cardAudioBusy ? null : onListen,
         child: Padding(
           padding: const EdgeInsets.all(10),
@@ -429,8 +433,8 @@ class _AlphabetCard extends StatelessWidget {
                     : const Icon(Icons.record_voice_over_rounded, size: 20),
                 label: Text(spellLabel),
                 style: FilledButton.styleFrom(
-                  backgroundColor: const Color(0xFF66BB6A),
-                  foregroundColor: Colors.white,
+                  backgroundColor: KidFriendlyColors.mintGreen,
+                  foregroundColor: theme.colorScheme.onTertiary,
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   textStyle:
                       const TextStyle(fontWeight: FontWeight.w800, fontSize: 13),

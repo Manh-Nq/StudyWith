@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:location_app/l10n/app_localizations.dart';
 import 'package:location_app/language_study/data/dictionary_models.dart';
+import 'package:location_app/theme/kid_friendly_adaptive.dart';
+import 'package:location_app/theme/kid_friendly_colors.dart';
+import 'package:location_app/theme/kid_friendly_theme.dart';
 
 /// Bottom sheet: headword, IPA, và các nghĩa — chữ lớn cho trẻ.
 Future<void> showLanguageStudyWordDetail(
@@ -12,6 +15,12 @@ Future<void> showLanguageStudyWordDetail(
     context: context,
     isScrollControlled: true,
     showDragHandle: true,
+    backgroundColor: Theme.of(context).colorScheme.surface,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(KidFriendlyLayout.cardRadius),
+      ),
+    ),
     builder: (BuildContext ctx) {
       final ColorScheme scheme = Theme.of(ctx).colorScheme;
       final TextTheme textTheme = Theme.of(ctx).textTheme;
@@ -26,12 +35,24 @@ Future<void> showLanguageStudyWordDetail(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Text(
-                    result.word,
-                    textAlign: TextAlign.center,
-                    style: textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 0.5,
+                  Material(
+                    color: ctx.kidTintSurface(KidFriendlyColors.languageTint),
+                    borderRadius:
+                        BorderRadius.circular(KidFriendlyLayout.buttonRadius),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
+                      child: Text(
+                        result.word,
+                        textAlign: TextAlign.center,
+                        style: textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 0.5,
+                          color: KidFriendlyColors.bodyText,
+                        ),
+                      ),
                     ),
                   ),
                   if (result.pronunciations.isNotEmpty) ...<Widget>[
@@ -47,6 +68,8 @@ Future<void> showLanguageStudyWordDetail(
                               r != null && r.isNotEmpty ? '${p.ipa} · $r' : p.ipa;
                           return Chip(
                             visualDensity: VisualDensity.compact,
+                            backgroundColor: scheme.surfaceContainerLow,
+                            side: BorderSide.none,
                             label: Text(
                               label,
                               style: textTheme.titleSmall?.copyWith(
@@ -64,7 +87,7 @@ Future<void> showLanguageStudyWordDetail(
                     l.languageStudyMeaningsHeading,
                     style: textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w800,
-                      color: scheme.primary,
+                      color: KidFriendlyColors.lavenderPrimary,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -77,8 +100,15 @@ Future<void> showLanguageStudyWordDetail(
                         s.subPos?.trim(),
                       ].whereType<String>().where((String x) => x.isNotEmpty).join(' · ');
                       return Padding(
-                        padding: EdgeInsets.only(bottom: last ? 0 : 16),
-                        child: Column(
+                        padding: EdgeInsets.only(bottom: last ? 0 : 12),
+                        child: Material(
+                          color: scheme.surfaceContainerLow,
+                          borderRadius: BorderRadius.circular(
+                            KidFriendlyLayout.buttonRadius,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(14),
+                            child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
                             if (posBits.isNotEmpty)
@@ -120,8 +150,9 @@ Future<void> showLanguageStudyWordDetail(
                                 ),
                               ),
                             ],
-                            if (!last) const Divider(height: 28),
                           ],
+                            ),
+                          ),
                         ),
                       );
                     },
@@ -129,6 +160,9 @@ Future<void> showLanguageStudyWordDetail(
                   const SizedBox(height: 16),
                   FilledButton(
                     onPressed: () => Navigator.of(ctx).pop(),
+                    style: FilledButton.styleFrom(
+                      minimumSize: const Size.fromHeight(KidFriendlyLayout.minTapTarget),
+                    ),
                     child: Text(l.mathDialogOk),
                   ),
                 ],

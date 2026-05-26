@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:location_app/theme/kid_friendly_adaptive.dart';
+import 'package:location_app/theme/kid_friendly_colors.dart';
+import 'package:location_app/theme/kid_friendly_theme.dart';
 import 'package:location_app/l10n/app_localizations.dart';
 import 'package:location_app/language_study/data/language_study_dictionary_repository.dart';
 import 'package:location_app/language_study/data/language_study_learned_words_store.dart';
@@ -222,7 +225,11 @@ class _LanguageStudyReviewQuizScreenState extends State<LanguageStudyReviewQuizS
         }
       },
       child: Scaffold(
+        backgroundColor:
+            context.kidScreenBackground(KidFriendlyColors.languageTint),
         appBar: AppBar(
+          backgroundColor:
+              context.kidBarBackground(KidFriendlyColors.languageTint),
           title: Text(l.languageStudyReview20AppBar),
           actions: <Widget>[
             IconButton(
@@ -274,14 +281,17 @@ class _LanguageStudyReviewQuizScreenState extends State<LanguageStudyReviewQuizS
                                 ),
                                 const SizedBox(height: 20),
                                 Material(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .primaryContainer
-                                      .withValues(alpha: 0.5),
-                                  borderRadius: BorderRadius.circular(16),
+                                  color: context.kidTintSurface(
+                                    KidFriendlyColors.languageTint,
+                                  ),
+                                  borderRadius: BorderRadius.circular(
+                                    KidFriendlyLayout.cardRadius,
+                                  ),
                                   child: InkWell(
                                     onTap: () => unawaited(_speakCurrent()),
-                                    borderRadius: BorderRadius.circular(16),
+                                    borderRadius: BorderRadius.circular(
+                                      KidFriendlyLayout.cardRadius,
+                                    ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(20),
                                       child: Column(
@@ -300,7 +310,7 @@ class _LanguageStudyReviewQuizScreenState extends State<LanguageStudyReviewQuizS
                                               const SizedBox(width: 8),
                                               Icon(
                                                 Icons.volume_up_rounded,
-                                                color: Theme.of(context).colorScheme.primary,
+                                                color: KidFriendlyColors.lavenderPrimary,
                                               ),
                                             ],
                                           ),
@@ -338,23 +348,35 @@ class _LanguageStudyReviewQuizScreenState extends State<LanguageStudyReviewQuizS
                                       final String label = q.choices[i];
                                       final bool selected = _selectedChoiceIndex == i;
                                       final bool isCorrect = i == q.correctChoiceIndex;
+                                      final AppSemanticColors semantic =
+                                          context.semanticColors;
+                                      final ColorScheme scheme =
+                                          Theme.of(context).colorScheme;
                                       Color? bg;
                                       Color? border;
                                       if (_answered) {
                                         if (isCorrect) {
-                                          bg = Colors.green.shade50;
-                                          border = Colors.green;
+                                          bg = semantic.successContainer;
+                                          border = semantic.success;
                                         } else if (selected) {
-                                          bg = Colors.red.shade50;
-                                          border = Colors.red;
+                                          bg = semantic.tryAgainContainer;
+                                          border = semantic.tryAgain;
                                         }
                                       }
                                       return OutlinedButton(
                                         style: OutlinedButton.styleFrom(
-                                          minimumSize: const Size.fromHeight(56),
-                                          backgroundColor: bg,
+                                          minimumSize: const Size.fromHeight(
+                                            KidFriendlyLayout.minTapTarget,
+                                          ),
+                                          backgroundColor: bg ??
+                                              scheme.surfaceContainerLow,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              KidFriendlyLayout.buttonRadius,
+                                            ),
+                                          ),
                                           side: BorderSide(
-                                            color: border ?? Colors.grey.shade400,
+                                            color: border ?? scheme.outlineVariant,
                                             width: _answered && (selected || isCorrect) ? 2 : 1,
                                           ),
                                           alignment: Alignment.centerLeft,

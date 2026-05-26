@@ -20,7 +20,7 @@ class AlphabetIllustration extends StatelessWidget {
     final Widget fallback = Icon(
       data.base.icon,
       size: size,
-      color: Colors.black87.withValues(alpha: 0.78),
+      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.78),
     );
     switch (data.imageKind) {
       case AlphabetOverrideImageKind.icon:

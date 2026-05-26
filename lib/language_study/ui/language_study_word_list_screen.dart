@@ -7,6 +7,9 @@ import 'package:location_app/language_study/data/language_study_learned_words_st
 import 'package:location_app/language_study/model/language_pair_id.dart';
 import 'package:location_app/language_study/model/language_study_pos_topic.dart';
 import 'package:location_app/language_study/service/language_study_tts_service.dart';
+import 'package:location_app/theme/kid_friendly_adaptive.dart';
+import 'package:location_app/theme/kid_friendly_colors.dart';
+import 'package:location_app/theme/kid_friendly_theme.dart';
 
 import 'language_study_ui_controller.dart';
 
@@ -179,7 +182,11 @@ class _LanguageStudyWordListScreenState extends State<LanguageStudyWordListScree
         }
       },
       child: Scaffold(
+        backgroundColor:
+            context.kidScreenBackground(KidFriendlyColors.languageTint),
         appBar: AppBar(
+          backgroundColor:
+              context.kidBarBackground(KidFriendlyColors.languageTint),
           title: Text(l.languageStudyLearn20AppBar),
           actions: <Widget>[
             IconButton(
@@ -241,8 +248,12 @@ class _LanguageStudyWordListScreenState extends State<LanguageStudyWordListScree
                             Padding(
                               padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
                               child: Material(
-                                color: scheme.primaryContainer.withValues(alpha: 0.65),
-                                borderRadius: BorderRadius.circular(12),
+                                color: context.kidTintSurface(
+                                  KidFriendlyColors.languageTint,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  KidFriendlyLayout.buttonRadius,
+                                ),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 14,
@@ -252,7 +263,7 @@ class _LanguageStudyWordListScreenState extends State<LanguageStudyWordListScree
                                     children: <Widget>[
                                       Icon(
                                         Icons.category_rounded,
-                                        color: scheme.primary,
+                                        color: KidFriendlyColors.lavenderPrimary,
                                       ),
                                       const SizedBox(width: 10),
                                       Expanded(
@@ -331,8 +342,8 @@ class _WordGridCard extends StatelessWidget {
     final String? ipa = item.ipaPreview?.trim();
     final String? meaning = item.meaningPreview?.trim();
     return Material(
-      color: scheme.surfaceContainerHighest.withValues(alpha: 0.55),
-      borderRadius: BorderRadius.circular(14),
+      color: context.kidTintSurface(KidFriendlyColors.languageTint),
+      borderRadius: BorderRadius.circular(KidFriendlyLayout.cardRadius),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,

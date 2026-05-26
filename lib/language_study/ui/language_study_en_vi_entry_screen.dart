@@ -7,6 +7,9 @@ import 'package:location_app/language_study/data/en_vn_dictionary_repository.dar
 import 'package:location_app/language_study/data/language_study_learned_words_store.dart';
 import 'package:location_app/language_study/model/language_pair_id.dart';
 import 'package:location_app/language_study/model/language_study_session_mode.dart';
+import 'package:location_app/theme/kid_friendly_adaptive.dart';
+import 'package:location_app/theme/kid_friendly_colors.dart';
+import 'package:location_app/theme/kid_friendly_theme.dart';
 
 import 'language_study_ui_controller.dart';
 import 'language_study_word_detail_sheet.dart';
@@ -225,7 +228,11 @@ class _LanguageStudyEnViEntryScreenState extends State<LanguageStudyEnViEntryScr
         }
       },
       child: Scaffold(
+        backgroundColor:
+            context.kidScreenBackground(KidFriendlyColors.languageTint),
         appBar: AppBar(
+          backgroundColor:
+              context.kidBarBackground(KidFriendlyColors.languageTint),
           title: Text(l.languageStudyEnViAppBarTitle),
           actions: <Widget>[
             IconButton(
@@ -295,23 +302,36 @@ class _LanguageStudyEnViEntryScreenState extends State<LanguageStudyEnViEntryScr
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.check_circle_rounded,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 22,
+                      Material(
+                        color: context.kidTintSurface(KidFriendlyColors.languageTint),
+                        borderRadius: BorderRadius.circular(KidFriendlyLayout.buttonRadius),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 10,
                           ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              l.languageStudyDbReady,
-                              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            ),
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.check_circle_rounded,
+                                color: KidFriendlyColors.lavenderPrimary,
+                                size: 22,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  l.languageStudyDbReady,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                       const SizedBox(height: 12),
                       FilledButton.icon(
@@ -482,9 +502,17 @@ class _LanguageStudyEnViEntryScreenState extends State<LanguageStudyEnViEntryScr
         ),
       );
     }
-    return ListView.separated(
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    return Material(
+      color: scheme.surfaceContainerLow,
+      borderRadius: BorderRadius.circular(KidFriendlyLayout.cardRadius),
+      clipBehavior: Clip.antiAlias,
+      child: ListView.separated(
       itemCount: _suggestions.length,
-      separatorBuilder: (_, __) => const Divider(height: 1),
+      separatorBuilder: (_, __) => Divider(
+        height: 1,
+        color: scheme.outlineVariant.withValues(alpha: 0.5),
+      ),
       itemBuilder: (BuildContext context, int i) {
         final String word = _suggestions[i];
         return ListTile(
@@ -508,6 +536,7 @@ class _LanguageStudyEnViEntryScreenState extends State<LanguageStudyEnViEntryScr
           },
         );
       },
+      ),
     );
   }
 }

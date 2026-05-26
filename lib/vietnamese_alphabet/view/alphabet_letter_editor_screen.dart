@@ -10,6 +10,10 @@ import 'package:location_app/l10n/app_localizations.dart';
 import '../data/alphabet_override_repository.dart';
 import '../model/alphabet_card_view_data.dart';
 import '../model/alphabet_letter_override_row.dart';
+import 'package:location_app/theme/kid_friendly_adaptive.dart';
+import 'package:location_app/theme/kid_friendly_colors.dart';
+import 'package:location_app/theme/kid_friendly_theme.dart';
+
 import '../model/alphabet_override_image_kind.dart';
 import 'alphabet_illustration.dart';
 
@@ -201,8 +205,12 @@ class _AlphabetLetterEditorScreenState extends State<AlphabetLetterEditorScreen>
               ? _pickedBase64
               : _urlController.text),
     );
+    final ColorScheme scheme = Theme.of(context).colorScheme;
     return Scaffold(
+      backgroundColor:
+          context.kidScreenBackground(KidFriendlyColors.alphabetTint),
       appBar: AppBar(
+        backgroundColor: context.kidBarBackground(KidFriendlyColors.alphabetTint),
         title: Text(l.alphabetEditorTitle(widget.viewData.base.letterDisplay)),
       ),
       body: SafeArea(
@@ -210,19 +218,33 @@ class _AlphabetLetterEditorScreenState extends State<AlphabetLetterEditorScreen>
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
           children: <Widget>[
             Center(
-              child: Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  color: widget.viewData.base.illustrationBackground,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Center(
-                  child: AlphabetIllustration(data: previewData, size: 56),
+              child: Material(
+                elevation: 0,
+                color: scheme.surface,
+                borderRadius:
+                    BorderRadius.circular(KidFriendlyLayout.cardRadius),
+                child: Container(
+                  width: 132,
+                  height: 132,
+                  decoration: BoxDecoration(
+                    color: widget.viewData.base.illustrationBackground,
+                    borderRadius:
+                        BorderRadius.circular(KidFriendlyLayout.cardRadius),
+                  ),
+                  child: Center(
+                    child: AlphabetIllustration(data: previewData, size: 56),
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 16),
+            Material(
+              color: scheme.surface,
+              borderRadius: BorderRadius.circular(KidFriendlyLayout.cardRadius),
+              child: Padding(
+                padding: const EdgeInsets.all(14),
+                child: Column(
+                  children: <Widget>[
             TextField(
               controller: _exampleViController,
               decoration: InputDecoration(
@@ -247,7 +269,19 @@ class _AlphabetLetterEditorScreenState extends State<AlphabetLetterEditorScreen>
               ),
               onChanged: (_) => setState(() {}),
             ),
-            const SizedBox(height: 20),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Material(
+              color: scheme.surface,
+              borderRadius: BorderRadius.circular(KidFriendlyLayout.cardRadius),
+              child: Padding(
+                padding: const EdgeInsets.all(14),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
             Text(
               l.alphabetEditorImageSection,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -302,9 +336,17 @@ class _AlphabetLetterEditorScreenState extends State<AlphabetLetterEditorScreen>
                 ),
               ),
             ],
-            const SizedBox(height: 28),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
             FilledButton(
               onPressed: () => unawaited(_save()),
+              style: FilledButton.styleFrom(
+                minimumSize: const Size.fromHeight(KidFriendlyLayout.minTapTarget),
+                backgroundColor: KidFriendlyColors.mintGreen,
+              ),
               child: Text(l.alphabetEditorSave),
             ),
             const SizedBox(height: 10),

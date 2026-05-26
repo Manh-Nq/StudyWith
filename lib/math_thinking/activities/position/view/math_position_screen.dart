@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:location_app/theme/kid_friendly_colors.dart';
 import 'package:location_app/l10n/app_localizations.dart';
 import 'package:location_app/math_thinking/model/math_activity_type.dart';
 
@@ -70,21 +71,32 @@ class MathPositionScreen extends StatelessWidget {
         } else if (pos == 'right') {
           dot = const Alignment(0.75, 0);
         }
+        final ColorScheme scheme = Theme.of(context).colorScheme;
         return Center(
           child: Container(
             width: 190,
             height: 190,
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.black54, width: 3),
-              borderRadius: BorderRadius.circular(14),
+              color: scheme.surfaceContainerLow,
+              border: Border.all(color: scheme.outlineVariant, width: 2),
+              borderRadius: BorderRadius.circular(16),
             ),
             child: Align(
               alignment: dot,
               child: Container(
                 width: 36,
                 height: 36,
-                decoration: const BoxDecoration(
-                    color: Colors.purple, shape: BoxShape.circle),
+                decoration: BoxDecoration(
+                  color: KidFriendlyColors.lavenderPrimary,
+                  shape: BoxShape.circle,
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      color: scheme.shadow.withValues(alpha: 0.15),
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
