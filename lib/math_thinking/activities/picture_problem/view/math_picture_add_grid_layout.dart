@@ -56,7 +56,11 @@ class MathPictureAddGridLayout {
     if (count <= 500) {
       return 12;
     }
-    return 20;
+    if (count <= 2000) {
+      final int fromSqrt = (math.sqrt(count) * 2.2).ceil();
+      return math.min(count, math.max(20, fromSqrt));
+    }
+    return math.min(count, 40);
   }
 
   static double _maxCellForCount(int count) {
@@ -183,7 +187,7 @@ class MathPictureAddGridLayout {
     final double cell = _clampCellToFit(
       columns: cols,
       rows: rows,
-      cell: math.max(2, raw),
+      cell: math.max(minCell, raw),
       innerWidth: safeW,
       innerHeight: safeH,
     );

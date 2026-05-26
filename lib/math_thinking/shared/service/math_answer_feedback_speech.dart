@@ -1,33 +1,21 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 
 /// Phản hồi ngắn khi trả lời đúng / sai (toán tư duy): hiệu ứng âm thanh, không dùng TTS.
 ///
-/// Dùng [rootBundle] + [BytesSource] thay cho [AssetSource] để tránh lỗi đường dẫn
-/// qua AudioCache và ổn định hơn trên Android/iOS.
+/// Dùng [AssetSource] + [PlayerMode.lowLatency] trên Android. [BytesSource] không
+/// tương thích SoundPool (LOW_LATENCY) trên Android.
 class MathAnswerFeedbackSpeech {
   MathAnswerFeedbackSpeech._();
   static final MathAnswerFeedbackSpeech instance =
       MathAnswerFeedbackSpeech._();
 
   AudioPlayer? _player;
-  Uint8List? _correctBytes;
-  Uint8List? _wrongBytes;
   static bool _globalAudioConfigured = false;
 
-  static const String _correctKey = 'assets/sounds/math_feedback_correct.wav';
-  static const String _wrongKey = 'assets/sounds/math_feedback_wrong.wav';
-
-  Future<void> _ensureBuffers() async {
-    if (_correctBytes != null && _wrongBytes != null) {
-      return;
-    }
-    final ByteData correctData = await rootBundle.load(_correctKey);
-    final ByteData wrongData = await rootBundle.load(_wrongKey);
-    _correctBytes = correctData.buffer.asUint8List();
-    _wrongBytes = wrongData.buffer.asUint8List();
-  }
+  /// Đường dẫn tương đối trong `pubspec` (`assets/sounds/...`), không gồm `assets/`.
+  static const String _correctAsset = 'sounds/math_feedback_correct.wav';
+  static const String _wrongAsset = 'sounds/math_feedback_wrong.wav';
 
   Future<void> _configureGlobalAudioOnce() async {
     if (_globalAudioConfigured || kIsWeb) {
@@ -51,7 +39,6 @@ class MathAnswerFeedbackSpeech {
   }
 
   Future<void> _ensurePlayer() async {
-    await _ensureBuffers();
     if (_player != null) {
       return;
     }
@@ -75,16 +62,12 @@ class MathAnswerFeedbackSpeech {
     try {
       await _ensurePlayer();
       final AudioPlayer? p = _player;
-      final Uint8List? correctBuf = _correctBytes;
-      final Uint8List? wrongBuf = _wrongBytes;
-      if (p == null || correctBuf == null || wrongBuf == null) {
+      if (p == null) {
         return;
       }
       await p.stop();
-      final Uint8List bytes = correct ? correctBuf : wrongBuf;
-      await p.play(
-        BytesSource(bytes, mimeType: 'audio/wav'),
-      );
+      final String asset = correct ? _correctAsset : _wrongAsset;
+      await p.play(AssetSource(asset));
     } catch (e, st) {
       if (kDebugMode) {
         debugPrint('MathAnswerFeedbackSpeech: $e\n$st');

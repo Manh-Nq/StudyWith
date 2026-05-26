@@ -64,13 +64,12 @@ class MathPictureProblemScreen extends StatelessWidget {
                     screenSize: screenSize,
                   );
                   final int maxCount = math.max(left, right);
-                  final double pictureAreaHeight = math.max(
-                    1,
-                    constraints.maxHeight - metrics.equationSectionHeight(),
-                  );
-                  final double pairWidth =
-                      metrics.pairColumnWidth(constraints.maxWidth);
-                  final double innerW = metrics.innerWidth(pairWidth);
+                  final MathPictureCardLayoutBudget budget =
+                      metrics.layoutBudget(constraints.maxHeight);
+                  final double pictureAreaHeight = budget.pictureHeight;
+                  final double groupWidth =
+                      metrics.pictureGroupWidth(constraints.maxWidth);
+                  final double innerW = metrics.innerWidth(groupWidth);
                   final double innerH = metrics.targetInnerHeight(
                     maxCount: maxCount,
                     maxFrameHeight: pictureAreaHeight,
@@ -95,7 +94,6 @@ class MathPictureProblemScreen extends StatelessWidget {
                     itemEmoji: item,
                     metrics: metrics,
                     sharedLayout: sharedLayout,
-                    maxPictureFrameHeight: pictureAreaHeight,
                     minPictureFrameHeight: minPictureFrameHeight,
                     maxEmojiFontSize: maxEmojiFontSize,
                   );
