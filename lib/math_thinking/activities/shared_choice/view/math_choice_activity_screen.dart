@@ -8,6 +8,7 @@ import 'package:location_app/study_tracking/math_trace_snapshot.dart';
 import '../../../shared/ui/math_activity_graded_feedback_overlay.dart';
 import '../../../shared/ui/math_activity_dialogs.dart';
 import '../../../shared/ui/math_activity_ui_controller.dart';
+import '../../../shared/view/math_entity_manager_screen.dart';
 import '../model/math_choice_question.dart';
 import '../view_model/math_choice_activity_view_model.dart';
 
@@ -30,12 +31,14 @@ class MathChoiceActivityScreen extends StatefulWidget {
     required this.viewModel,
     required this.bodyBuilder,
     this.optionLabelBuilder,
+    this.showEntityManagerButton = false,
   });
   final String title;
   final MathActivityType traceActivityType;
   final MathChoiceActivityViewModel viewModel;
   final MathChoiceBodyBuilder bodyBuilder;
   final MathChoiceOptionLabelBuilder? optionLabelBuilder;
+  final bool showEntityManagerButton;
 
   @override
   State<MathChoiceActivityScreen> createState() =>
@@ -173,6 +176,22 @@ class _MathChoiceActivityScreenState extends State<MathChoiceActivityScreen> {
                     : Icons.lock_rounded,
               ),
             ),
+            if (widget.showEntityManagerButton)
+              IconButton(
+                tooltip: l.mathTooltipManageObjects,
+                onPressed: _ui.screenLocked
+                    ? () => _ui.showLockedSnack(context)
+                    : () async {
+                        await Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext ctx) =>
+                                const MathEntityManagerScreen(),
+                          ),
+                        );
+                        await _viewModel.nextQuestion();
+                      },
+                icon: const Icon(Icons.settings_rounded),
+              ),
           ],
         ),
         body: SafeArea(

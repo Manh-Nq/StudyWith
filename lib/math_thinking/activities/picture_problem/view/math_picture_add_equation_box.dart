@@ -9,11 +9,13 @@ class MathPictureAddEquationBar extends StatelessWidget {
     required this.leftCount,
     required this.rightCount,
     required this.metrics,
+    this.operator = '+',
   });
 
   final int leftCount;
   final int rightCount;
   final MathPictureAddLayoutMetrics metrics;
+  final String operator;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,7 @@ class MathPictureAddEquationBar extends StatelessWidget {
                   foreground: scheme.primary,
                 ),
                 SizedBox(width: metrics.equationChipGap),
-                Text('+', style: operatorStyle),
+                Text(operator, style: operatorStyle),
                 SizedBox(width: metrics.equationChipGap),
                 _EquationChip(
                   label: '$rightCount',

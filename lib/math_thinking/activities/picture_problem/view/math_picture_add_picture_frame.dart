@@ -1,27 +1,28 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-
+import '../model/math_picture_item.dart';
 import 'math_picture_add_grid_layout.dart';
+import 'math_picture_item_widget.dart';
 
 /// Khung nhóm tranh (nền nhẹ, bo góc — giống thẻ nhóm đồ vật trong app học toán).
 class MathPictureAddPictureFrame extends StatelessWidget {
   const MathPictureAddPictureFrame({
     super.key,
     required this.count,
-    required this.itemEmoji,
+    required this.item,
     required this.sharedLayout,
     required this.maxFrameHeight,
     required this.minFrameHeight,
-    required this.maxEmojiFontSize,
+    required this.maxItemSize,
   });
 
   final int count;
-  final String itemEmoji;
+  final MathPictureItem item;
   final MathPictureAddGridLayout sharedLayout;
   final double maxFrameHeight;
   final double minFrameHeight;
-  final double maxEmojiFontSize;
+  final double maxItemSize;
 
   @override
   Widget build(BuildContext context) {
@@ -67,10 +68,10 @@ class MathPictureAddPictureFrame extends StatelessWidget {
                       ),
                       child: _CenteredPictureCluster(
                         count: count,
-                        itemEmoji: itemEmoji,
+                        item: item,
                         layout: layout,
                         maxRowWidth: constraints.maxWidth,
-                        maxEmojiFontSize: maxEmojiFontSize,
+                        maxItemSize: maxItemSize,
                       ),
                     ),
                   ),
@@ -87,17 +88,17 @@ class MathPictureAddPictureFrame extends StatelessWidget {
 class _CenteredPictureCluster extends StatelessWidget {
   const _CenteredPictureCluster({
     required this.count,
-    required this.itemEmoji,
+    required this.item,
     required this.layout,
     required this.maxRowWidth,
-    required this.maxEmojiFontSize,
+    required this.maxItemSize,
   });
 
   final int count;
-  final String itemEmoji;
+  final MathPictureItem item;
   final MathPictureAddGridLayout layout;
   final double maxRowWidth;
-  final double maxEmojiFontSize;
+  final double maxItemSize;
 
   @override
   Widget build(BuildContext context) {
@@ -117,10 +118,10 @@ class _CenteredPictureCluster extends StatelessWidget {
           return Padding(
             padding: EdgeInsets.only(top: row == 0 ? 0 : layout.gap),
             child: _PictureRow(
-              itemEmoji: itemEmoji,
+              item: item,
               layout: layout,
               maxRowWidth: maxRowWidth,
-              maxEmojiFontSize: maxEmojiFontSize,
+              maxItemSize: maxItemSize,
               itemsInRow: itemsInRow,
             ),
           );
@@ -137,10 +138,10 @@ class _CenteredPictureCluster extends StatelessWidget {
         return Padding(
           padding: EdgeInsets.only(top: row == 0 ? 0 : layout.gap),
           child: _PictureRow(
-            itemEmoji: itemEmoji,
+            item: item,
             layout: layout,
             maxRowWidth: maxRowWidth,
-            maxEmojiFontSize: maxEmojiFontSize,
+            maxItemSize: maxItemSize,
             itemsInRow: itemsInRow,
           ),
         );
@@ -151,33 +152,31 @@ class _CenteredPictureCluster extends StatelessWidget {
 
 class _PictureRow extends StatelessWidget {
   const _PictureRow({
-    required this.itemEmoji,
+    required this.item,
     required this.layout,
     required this.maxRowWidth,
-    required this.maxEmojiFontSize,
+    required this.maxItemSize,
     required this.itemsInRow,
   });
 
-  final String itemEmoji;
+  final MathPictureItem item;
   final MathPictureAddGridLayout layout;
   final double maxRowWidth;
-  final double maxEmojiFontSize;
+  final double maxItemSize;
   final int itemsInRow;
 
   @override
   Widget build(BuildContext context) {
+    final double itemSize = layout.emojiFontSizeFor(maxItemSize);
     final List<Widget> rowChildren = List<Widget>.generate(
       itemsInRow,
       (_) => SizedBox(
         width: layout.cellSize,
         height: layout.cellSize,
         child: Center(
-          child: Text(
-            itemEmoji,
-            style: TextStyle(
-              fontSize: layout.emojiFontSizeFor(maxEmojiFontSize),
-              height: 1,
-            ),
+          child: MathPictureItemWidget(
+            item: item,
+            size: itemSize,
           ),
         ),
       ),

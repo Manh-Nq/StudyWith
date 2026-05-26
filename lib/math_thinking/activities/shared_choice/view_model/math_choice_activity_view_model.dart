@@ -1,10 +1,11 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 
 import '../model/math_choice_question.dart';
 
-typedef MathChoiceGenerator = MathChoiceQuestion Function();
+typedef MathChoiceGenerator = FutureOr<MathChoiceQuestion> Function();
 
 enum MathChoiceSessionMode { practice, exam }
 
@@ -62,7 +63,10 @@ class MathChoiceActivityViewModel extends ChangeNotifier {
       await nextQuestion();
     } catch (e) {
       _question = null;
-      _errorMessage = 'Không thể tạo câu hỏi: $e';
+      final String message = e is StateError ? e.message : '$e';
+      _errorMessage = message.isNotEmpty
+          ? message
+          : 'Không thể tạo câu hỏi.';
     } finally {
       _loading = false;
       notifyListeners();
@@ -70,7 +74,7 @@ class MathChoiceActivityViewModel extends ChangeNotifier {
   }
 
   Future<void> nextQuestion() async {
-    _question = _generator();
+    _question = await _generator();
     _traceQuestionOrdinal++;
     _errorMessage = '';
     notifyListeners();

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:location_app/l10n/app_localizations.dart';
+import 'package:location_app/math_thinking/activities/picture_problem/model/math_picture_operation_mode.dart';
+import 'package:location_app/math_thinking/activities/picture_problem/model/math_picture_problem_setup.dart';
 import 'package:location_app/math_thinking/activities/sequence/model/math_sequence_pattern_mode.dart';
 import 'package:location_app/theme/kid_friendly_colors.dart';
 import 'package:location_app/theme/kid_friendly_theme.dart';
@@ -138,13 +140,15 @@ abstract final class MathActivityDialogs {
     );
   }
 
-  /// Giới hạn tổng a+b cho bài toán có tranh (mặc định 10).
-  static Future<int?> showPictureSumLimitSetup(BuildContext context) {
-    return showDialog<int>(
+  /// Chọn phép (cộng / trừ / tổng hợp) và giới hạn số cho bài toán có tranh.
+  static Future<MathPictureProblemSetup?> showPictureProblemSetup(
+    BuildContext context,
+  ) {
+    return showDialog<MathPictureProblemSetup>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
-        return const _PictureSumLimitDialog();
+        return const _PictureProblemSetupDialog();
       },
     );
   }
@@ -469,16 +473,18 @@ abstract final class MathActivityDialogs {
   }
 }
 
-class _PictureSumLimitDialog extends StatefulWidget {
-  const _PictureSumLimitDialog();
+class _PictureProblemSetupDialog extends StatefulWidget {
+  const _PictureProblemSetupDialog();
 
   @override
-  State<_PictureSumLimitDialog> createState() => _PictureSumLimitDialogState();
+  State<_PictureProblemSetupDialog> createState() =>
+      _PictureProblemSetupDialogState();
 }
 
-class _PictureSumLimitDialogState extends State<_PictureSumLimitDialog> {
+class _PictureProblemSetupDialogState extends State<_PictureProblemSetupDialog> {
   late final TextEditingController _controller =
       TextEditingController(text: '10');
+  MathPictureOperationMode _mode = MathPictureOperationMode.addition;
   String? _errorText;
 
   @override
@@ -492,6 +498,17 @@ class _PictureSumLimitDialogState extends State<_PictureSumLimitDialog> {
       setState(() {
         _errorText = null;
       });
+    }
+  }
+
+  String _bodyForMode(AppLocalizations l) {
+    switch (_mode) {
+      case MathPictureOperationMode.addition:
+        return l.mathPictureSumLimitDialogBody;
+      case MathPictureOperationMode.subtraction:
+        return l.mathPictureSubtractLimitDialogBody;
+      case MathPictureOperationMode.mixed:
+        return l.mathPictureMixedLimitDialogBody;
     }
   }
 
@@ -514,42 +531,85 @@ class _PictureSumLimitDialogState extends State<_PictureSumLimitDialog> {
       });
       return;
     }
-    Navigator.of(context).pop(parsed);
+    Navigator.of(context).pop(
+      MathPictureProblemSetup(limit: parsed, mode: _mode),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations l = AppLocalizations.of(context)!;
     return AlertDialog(
-      title: Text(l.mathPictureSumLimitDialogTitle),
+      title: Text(l.mathPictureSetupDialogTitle),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: KidFriendlyColors.mathOperationsTint,
-                    borderRadius: BorderRadius.circular(12),
+            Text(
+              l.mathPictureSetupModeHeading,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
                   ),
-                  child: const Icon(
-                    Icons.image_rounded,
-                    color: KidFriendlyColors.warmCoral,
+            ),
+            const SizedBox(height: 8),
+            RadioListTile<MathPictureOperationMode>(
+              title: Text(
+                l.mathPictureModeAdditionTitle,
+                style: const TextStyle(fontWeight: FontWeight.w800),
+              ),
+              subtitle: Text(l.mathPictureModeAdditionSubtitle),
+              value: MathPictureOperationMode.addition,
+              groupValue: _mode,
+              onChanged: (MathPictureOperationMode? v) {
+                if (v == null) {
+                  return;
+                }
+                setState(() {
+                  _mode = v;
+                });
+              },
+            ),
+            RadioListTile<MathPictureOperationMode>(
+              title: Text(
+                l.mathPictureModeSubtractionTitle,
+                style: const TextStyle(fontWeight: FontWeight.w800),
+              ),
+              subtitle: Text(l.mathPictureModeSubtractionSubtitle),
+              value: MathPictureOperationMode.subtraction,
+              groupValue: _mode,
+              onChanged: (MathPictureOperationMode? v) {
+                if (v == null) {
+                  return;
+                }
+                setState(() {
+                  _mode = v;
+                });
+              },
+            ),
+            RadioListTile<MathPictureOperationMode>(
+              title: Text(
+                l.mathPictureModeMixedTitle,
+                style: const TextStyle(fontWeight: FontWeight.w800),
+              ),
+              subtitle: Text(l.mathPictureModeMixedSubtitle),
+              value: MathPictureOperationMode.mixed,
+              groupValue: _mode,
+              onChanged: (MathPictureOperationMode? v) {
+                if (v == null) {
+                  return;
+                }
+                setState(() {
+                  _mode = v;
+                });
+              },
+            ),
+            const Divider(height: 20),
+            Text(
+              _bodyForMode(l),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    height: 1.35,
                   ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    l.mathPictureSumLimitDialogBody,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          height: 1.35,
-                        ),
-                  ),
-                ),
-              ],
             ),
             const SizedBox(height: 12),
             TextField(

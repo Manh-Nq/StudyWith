@@ -20,6 +20,7 @@ import '../activities/identify_shapes/view/math_identify_shapes_screen.dart';
 import '../activities/matching_pairs/view/math_matching_pairs_screen.dart';
 import '../activities/odd_one_out/view/math_odd_one_out_screen.dart';
 import '../activities/pattern/view/math_pattern_screen.dart';
+import '../activities/picture_problem/model/math_picture_problem_setup.dart';
 import '../activities/picture_problem/view/math_picture_problem_screen.dart';
 import '../activities/position/view/math_position_screen.dart';
 import '../activities/same_different/view/math_same_different_screen.dart';
@@ -80,15 +81,17 @@ class _MathActivityListScreenState extends State<MathActivityListScreen> {
   }
 
   Future<void> _openPictureProblem(BuildContext context) async {
-    final int? sumLimit =
-        await MathActivityDialogs.showPictureSumLimitSetup(context);
-    if (!context.mounted || sumLimit == null) {
+    final MathPictureProblemSetup? setup =
+        await MathActivityDialogs.showPictureProblemSetup(context);
+    if (!context.mounted || setup == null) {
       return;
     }
     await Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (BuildContext ctx) =>
-            MathPictureProblemScreen(sumLimit: sumLimit),
+        builder: (BuildContext ctx) => MathPictureProblemScreen(
+          limit: setup.limit,
+          mode: setup.mode,
+        ),
       ),
     );
   }

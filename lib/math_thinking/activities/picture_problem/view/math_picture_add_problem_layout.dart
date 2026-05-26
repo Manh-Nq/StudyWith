@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../model/math_picture_item.dart';
 import 'math_picture_add_equation_box.dart';
 import 'math_picture_add_grid_layout.dart';
 import 'math_picture_add_layout_metrics.dart';
@@ -11,20 +11,22 @@ class MathPictureAddProblemLayout extends StatelessWidget {
     super.key,
     required this.leftCount,
     required this.rightCount,
-    required this.itemEmoji,
+    required this.item,
     required this.metrics,
     required this.sharedLayout,
     required this.minPictureFrameHeight,
-    required this.maxEmojiFontSize,
+    required this.maxItemSize,
+    this.operator = '+',
   });
 
   final int leftCount;
   final int rightCount;
-  final String itemEmoji;
+  final MathPictureItem item;
+  final String operator;
   final MathPictureAddLayoutMetrics metrics;
   final MathPictureAddGridLayout sharedLayout;
   final double minPictureFrameHeight;
-  final double maxEmojiFontSize;
+  final double maxItemSize;
 
   @override
   Widget build(BuildContext context) {
@@ -68,11 +70,11 @@ class MathPictureAddProblemLayout extends StatelessWidget {
                         Expanded(
                           child: MathPictureAddPictureFrame(
                             count: leftCount,
-                            itemEmoji: itemEmoji,
+                            item: item,
                             sharedLayout: sharedLayout,
                             maxFrameHeight: layoutBudget.pictureHeight,
                             minFrameHeight: minPictureFrameHeight,
-                            maxEmojiFontSize: maxEmojiFontSize,
+                            maxItemSize: maxItemSize,
                           ),
                         ),
                         Padding(
@@ -80,17 +82,17 @@ class MathPictureAddProblemLayout extends StatelessWidget {
                             horizontal: metrics.groupGap / 2,
                           ),
                           child: Center(
-                            child: Text('+', style: plusStyle),
+                            child: Text(operator, style: plusStyle),
                           ),
                         ),
                         Expanded(
                           child: MathPictureAddPictureFrame(
                             count: rightCount,
-                            itemEmoji: itemEmoji,
+                            item: item,
                             sharedLayout: sharedLayout,
                             maxFrameHeight: layoutBudget.pictureHeight,
                             minFrameHeight: minPictureFrameHeight,
-                            maxEmojiFontSize: maxEmojiFontSize,
+                            maxItemSize: maxItemSize,
                           ),
                         ),
                       ],
@@ -107,6 +109,7 @@ class MathPictureAddProblemLayout extends StatelessWidget {
                         leftCount: leftCount,
                         rightCount: rightCount,
                         metrics: metrics,
+                        operator: operator,
                       ),
                     ),
                   ),

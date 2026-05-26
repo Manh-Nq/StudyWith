@@ -1,39 +1,69 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:location_app/l10n/app_localizations.dart';
 import 'package:location_app/math_thinking/model/math_activity_type.dart';
+import 'package:location_app/math_thinking/shared/data/repository/math_entity_repository.dart';
+import 'package:location_app/math_thinking/shared/model/math_entity_type.dart';
 
 import '../../shared_choice/model/math_choice_question.dart';
+import '../model/math_picture_item.dart';
 import '../../shared_choice/view/math_choice_activity_screen.dart';
 import '../../shared_choice/view_model/math_choice_activity_view_model.dart';
 import '../model/math_picture_add_meta.dart';
-import '../service/math_picture_add_generator.dart';
+import '../model/math_picture_operation_mode.dart';
+import '../service/math_picture_problem_generator.dart';
 import 'math_picture_add_grid_layout.dart';
 import 'math_picture_add_layout_metrics.dart';
 import 'math_picture_add_problem_layout.dart';
 
-class MathPictureProblemScreen extends StatelessWidget {
+class MathPictureProblemScreen extends StatefulWidget {
   const MathPictureProblemScreen({
     super.key,
-    required this.sumLimit,
+    required this.limit,
+    required this.mode,
   });
 
-  final int sumLimit;
+  final int limit;
+  final MathPictureOperationMode mode;
+
+  @override
+  State<MathPictureProblemScreen> createState() => _MathPictureProblemScreenState();
+}
+
+class _MathPictureProblemScreenState extends State<MathPictureProblemScreen> {
+  final MathEntityRepository _repository = MathEntityRepository();
+  final MathPictureProblemGenerator _problemGenerator = MathPictureProblemGenerator();
+  late final MathChoiceActivityViewModel _viewModel = MathChoiceActivityViewModel(
+    generator: _loadQuestion,
+  );
+
+  Future<MathChoiceQuestion> _loadQuestion() async {
+    final AppLocalizations l = AppLocalizations.of(context)!;
+    await _repository.ensureSeedData();
+    final List<MathEntityType> activeEntities = await _repository.getActive();
+    return _problemGenerator.generate(
+      l: l,
+      limit: widget.limit,
+      mode: widget.mode,
+      entities: activeEntities,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations l = AppLocalizations.of(context)!;
-    final MathPictureAddGenerator generator = MathPictureAddGenerator();
     return MathChoiceActivityScreen(
       title: l.mathActPictureTitle,
       traceActivityType: MathActivityType.pictureWordProblem,
-      viewModel: MathChoiceActivityViewModel(
-        generator: () => generator.generate(l: l, sumLimit: sumLimit),
-      ),
+      viewModel: _viewModel,
+      showEntityManagerButton: true,
       bodyBuilder: (BuildContext context, MathChoiceQuestion question) {
-        final String item =
-            question.meta[MathPictureAddMeta.itemEmoji] ?? '🐔';
+        final MathPictureItem? item = MathPictureItem.fromMeta(question.meta);
+        if (item == null) {
+          return Center(child: Text(l.mathEntityMissingForQuestion));
+        }
         final int left = int.tryParse(
               question.meta[MathPictureAddMeta.leftCount] ?? '',
             ) ??
@@ -42,11 +72,18 @@ class MathPictureProblemScreen extends StatelessWidget {
               question.meta[MathPictureAddMeta.rightCount] ?? '',
             ) ??
             0;
+        final bool isSubtract = MathPictureOperationMode.metaIsSubtraction(
+          question.meta[MathPictureAddMeta.operation],
+        );
+        final String operator = isSubtract ? '−' : '+';
+        final String layoutHint = isSubtract
+            ? l.mathPictureSubtractLayoutHint
+            : l.mathPictureAddLayoutHint;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Text(
-              l.mathPictureAddLayoutHint,
+              layoutHint,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w700,
@@ -79,7 +116,7 @@ class MathPictureProblemScreen extends StatelessWidget {
                   final double minCell = metrics.minCellSize(maxCount);
                   final double minPictureFrameHeight =
                       metrics.minFrameHeight(maxCount, pictureAreaHeight);
-                  final double maxEmojiFontSize = maxCell * 0.9;
+                  final double maxItemSize = maxCell * 0.9;
                   final MathPictureAddGridLayout sharedLayout =
                       MathPictureAddGridLayout.compute(
                     count: maxCount,
@@ -91,11 +128,12 @@ class MathPictureProblemScreen extends StatelessWidget {
                   return MathPictureAddProblemLayout(
                     leftCount: left,
                     rightCount: right,
-                    itemEmoji: item,
+                    item: item,
+                    operator: operator,
                     metrics: metrics,
                     sharedLayout: sharedLayout,
                     minPictureFrameHeight: minPictureFrameHeight,
-                    maxEmojiFontSize: maxEmojiFontSize,
+                    maxItemSize: maxItemSize,
                   );
                 },
               ),
